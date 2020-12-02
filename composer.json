@@ -7,49 +7,6 @@
         },
         "exclude-from-classmap": [ "/Tests/" ]
     },
-    "repositories": [
-        {
-            "url": "https://github.com/burki/citeproc-php.git",
-            "type": "vcs"
-        },
-        {
-            "url": "https://github.com/burki/converter.git",
-            "type": "vcs"
-        },
-        {
-            "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
-            "type": "vcs"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/burki/SolrBundle.git"
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "citation-style-language/locales",
-                "version":"1.0.0",
-                "source": {
-                    "type": "git",
-                    "url": "https://github.com/citation-style-language/locales.git",
-                    "reference": "master"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "citation-style-language/styles-distribution",
-                "version":"1.0.0",
-                "source": {
-                    "type": "git",
-                    "url": "https://github.com/citation-style-language/styles-distribution.git",
-                    "reference": "master"
-                }
-            }
-        }
-    ],
-
     "require": {
         "php": "^7.3",
 
@@ -64,8 +21,6 @@
         "symfony/twig-bundle": "^5.1",
         "symfony/intl": "^5.1",
 
-        "symfony/web-profiler-bundle": "^5.1",
-        "symfony/debug-bundle": "^5.1",
         "symfony/var-dumper": "^5.1",
         "symfony/var-exporter": "^5.1",
         "symfony/http-foundation": "^5.1",
@@ -73,18 +28,6 @@
         "symfony/mime": "^5.1",
         "symfony/dom-crawler": "^5.1",
         "symfony/css-selector": "^5.1",
-
-        "symfony/validator": "^5.1",
-        "symfony/form": "^5.1",
-        "symfony/inflector": "^5.1",
-        "symfony/serializer": "^5.1",
-        "symfony/monolog-bundle": "^3.5",
-        "symfony/monolog-bridge": "^5.1",
-        "symfony/swiftmailer-bundle": "^3.4",
-        "knplabs/knp-menu-bundle": "^3.0",
-
-        "symfony/asset": "^5.1",
-        "armin/scssphp-bundle": "^1.1",
 
         "twig/twig": "^3.0",
         "twig/string-extra": "^3.0",
