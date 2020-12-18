@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo; // alias for Gedmo extensions annotations
 
 use FS\SolrBundle\Doctrine\Annotation as Solr;
 
+use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -54,7 +55,11 @@ extends PlaceBase
 
         $label = self::buildTypeLabel($type);
         if ($count > 1) {
-            $label = \Doctrine\Common\Inflector\Inflector::pluralize($label);
+            $inflector = new EnglishInflector();
+            $labels = $inflector->pluralize($label);
+            if (count($labels) > 0) {
+                $label = $labels[0];
+            }
         }
 
         return ucfirst($label);
