@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -24,6 +25,14 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Cocur\Slugify\SlugifyInterface;
+
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
+
+use TeiEditionBundle\Utils\ImageMagick\ImageMagickProcessor;
+use TeiEditionBundle\Utils\Xsl\XsltProcessor;
+use TeiEditionBundle\Utils\XmlFormatter\XmlFormatter;
 
 use FluidXml\FluidXml;
 use FluidXml\FluidNamespace;
@@ -32,28 +41,30 @@ use FluidXml\FluidNamespace;
  * Assign DOIs through DataCite MDS API.
  */
 class ArticleDoiCommand
-extends Command
+extends BaseCommand
 {
-    protected $em;
-    protected $router;
-    protected $translator;
     protected $prefix;
     protected $baseUrl;
     protected $user;
     protected $password;
 
     public function __construct(EntityManagerInterface $em,
+                                KernelInterface $kernel,
                                 RouterInterface $router,
                                 TranslatorInterface $translator,
-                                ParameterBagInterface $params)
+                                SlugifyInterface $slugify,
+                                ParameterBagInterface $params,
+                                ThemeRepositoryInterface $themeRepository,
+                                SettableThemeContext $themeContext,
+                                ?string $siteTheme,
+                                ImageMagickProcessor $imagickProcessor,
+                                XsltProcessor $xsltProcessor,
+                                XmlFormatter $formatter
+                            )
     {
-        parent::__construct();
+        parent::__construct($em, $kernel, $router, $translator, $slugify, $params, $themeRepository, $themeContext, $siteTheme, $imagickProcessor, $xsltProcessor, $formatter);
 
-        $this->em = $em;
-        $this->router = $router;
-        $this->translator = $translator;
         $this->prefix = $params->get('app.datacite.prefix');
-
         $this->baseUrl = $params->get('app.datacite.url');
         $this->user = $params->get('app.datacite.user');
         $this->password = $params->get('app.datacite.password');
@@ -167,6 +178,8 @@ extends Command
             $this->em->persist($entity);
             $this->flushEm($this->em);
         }
+
+        return 0;
     }
 
     function registerDoi($doi, $url, $metadata, $isActive = true)

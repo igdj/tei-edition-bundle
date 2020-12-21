@@ -6,8 +6,8 @@ namespace TeiEditionBundle\Command;
 use Symfony\Component\Console\Command\Command;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
