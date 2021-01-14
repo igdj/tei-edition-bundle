@@ -410,20 +410,20 @@
                     </div>
                 </div>
             </div>
-            {% if interpretations is not empty %}
+    {% if interpretations is not empty %}
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
                     </div>
                 </div>
-                {% for article in interpretations %}
+        {% for article in interpretations %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
                         <b>{{ helper.article_linked(article) }}</b>
                     </div>
                 </div>
-                {% if article.keywords is not empty %}
+            {% if article.keywords is not empty %}
                 <div class="row box-color-content-inverse">
                 {% for topic in article.keywords %}
                     {% set img_slug = slugify.slugify(topic|lookupLocalizedTopic) %}
@@ -440,29 +440,29 @@
                     {% endif %}
                 {% endfor %}
                 </div>
-                {% endif %}
-                {% endfor %}
-            </div>
             {% endif %}
+        {% endfor %}
+            </div>
+    {% endif %}
 
-            {% if related|length >= 1 %}
+    {% if related|length >= 1 %}
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'additionalsource.oneormany'|trans({ 'count': related|length }) }}</h4>
                     </div>
                 </div>
-                {% for source in related  %}
-                    {% if source.id != article.id %}
+        {% for source in related  %}
+            {% if source.id != meta.id %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
                         {{ helper.article_linked(source) }}
                     </div>
                 </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
             {% endif %}
+        {% endfor %}
+            </div>
+    {% endif %}
 {% endmacro %}
 
 {% macro person_list_item(person) %}
