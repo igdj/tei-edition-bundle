@@ -252,6 +252,7 @@ extends BaseCommand
 
         $root->addChild('identifier', $entity->buildDoi($prefix), [ 'identifierType' => 'DOI' ]);
 
+        $routeValue = $entity->getUid();
         if ('source' == $entity->getGenre()) {
             $routeKey = 'uid';
             $routeName = 'source';
@@ -271,6 +272,11 @@ extends BaseCommand
         else {
             $routeKey = 'slug';
             $routeName = 'article';
+            if ('background' == $entity->getArticleSection()) {
+                $routeName = 'topic-background';
+                $routeValue = $entity->getSlug();
+            }
+
             $authors = $entity->getAuthor();
             if (count($authors) > 0) {
                 $creators = $root->addChild('creators', true);
@@ -361,7 +367,7 @@ extends BaseCommand
         */
 
         $url = $this->adjustUrlProduction($this->router->generate($routeName, [
-                $routeKey => $entity->getUid(),
+                $routeKey => $routeValue,
                 '_locale' => $locale,
             ], UrlGeneratorInterface::ABSOLUTE_URL));
 
