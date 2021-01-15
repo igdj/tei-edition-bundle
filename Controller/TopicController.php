@@ -132,7 +132,8 @@ extends RenderTeiController
 
         $article = $this->getDoctrine()
                 ->getRepository('\TeiEditionBundle\Entity\Article')
-                ->findOneBy($criteria);
+                ->findOneBy($criteria)
+                ;
         if (isset($article)) {
             $meta = $article;
             list($prefix, $path) = explode(':', $meta->getUid(), 2);
@@ -228,13 +229,13 @@ extends RenderTeiController
         $articleIds = [];
         $sources = [];
         foreach ($queryBuilder->getQuery()->getResult() as $source) {
-            $article = $source->getIsPartOf();
-            $articleId = $article->getId();
+            $parentArticle = $source->getIsPartOf();
+            $articleId = $parentArticle->getId();
             if (array_key_exists($articleId, $articleIds)) {
                 // only use first source for multiple sources per article
                 continue;
             }
-            $keywords = $article->getKeywords();
+            $keywords = $parentArticle->getKeywords();
             $articleIds[$articleId] = $topics[$slug] == $keywords[0];
             $sources[] = $source;
         }
@@ -245,8 +246,8 @@ extends RenderTeiController
             // split into primary and additional
             $sourcesPrimary = [];
             foreach ($sources as $source) {
-                $article = $source->getIsPartOf();
-                $articleId = $article->getId();
+                $parentArticle = $source->getIsPartOf();
+                $articleId = $parentArticle->getId();
                 if ($articleIds[$articleId]) {
                     $sourcesPrimary[] = $source;
                 }
