@@ -45,6 +45,11 @@ extends BaseController
             return ;
         }
 
+        $refs = array_unique(array_map(function ($uid) {
+                // chop of anchor
+                return preg_replace('/\#.*/', '', $uid);
+            }, $refs));
+
         // make sure we only pick-up the published ones
         $query = $this->getDoctrine()
             ->getManager()
@@ -506,12 +511,14 @@ extends BaseController
                 foreach ($crawler as $node) {
                     $href = $node->getAttribute('href');
 
-                    if (preg_match('/^jgo:(article|source)\-(\d+)$/', $href)) {
-                        if (array_key_exists($href, $refLookup)) {
-                            $info = $refLookup[$href];
-                            $node->setAttribute('href', $refLookup[$href]['href']);
+                    if (preg_match('/^(jgo:(article|source)\-(\d+))(\#.+)?$/', $href, $matches)) {
+                        $hrefBase = $matches[1]; // $href without anchor
+                        $anchor = count($matches) > 4 ? $matches[4] : '';
+                        if (array_key_exists($hrefBase, $refLookup)) {
+                            $info = $refLookup[$hrefBase];
+                            $node->setAttribute('href', $refLookup[$hrefBase]['href'] . $anchor);
                             if (!empty($info['headline'])) {
-                                $node->setAttribute('title', $refLookup[$href]['headline']);
+                                $node->setAttribute('title', $refLookup[$hrefBase]['headline']);
                                 $node->setAttribute('class', 'setTooltip');
                             }
                         }
@@ -623,10 +630,10 @@ extends BaseController
             return $node->attr('data-title');
         }));
 
-        // refs to other articles in the format jg:article-123 or jgo:source-123
+        // refs to other articles in the format jg:article-123 or jgo:source-123#anchor
         $refs = array_unique($crawler->filterXPath("//a[@class='external']")->each(function ($node, $i) {
             $href = $node->attr('href');
-            if (preg_match('/^jgo:(article|source)\-(\d+)$/', $node->attr('href'))) {
+            if (preg_match('/^jgo:(article|source)\-(\d+)(\#.+)?$/', $node->attr('href'))) {
                 return $node->attr('href');
             }
         }));

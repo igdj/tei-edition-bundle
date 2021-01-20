@@ -119,11 +119,19 @@
                 }
             };
 
+            if (window.location.hash.length > 1) {
+                // adjust initial facs for anchors like #f123
+                var hash = window.location.hash.substr(1);
+                if (hash.match(/^f\d+$/)) {
+                    viewer_options['filePath'] = viewer_options['filePath'].replace(/f\d+/, hash);
+                }
+            }
+
             // display based on viewer-width
             // TODO: for english, prefer translation of transcription for
             // non-enlish texts
             if ($( '#image-viewer' ).width() > 800) {
-                viewer_options["text.showOnStart"] = [ 'transcription' ];
+                viewer_options['text.showOnStart'] = [ 'transcription' ];
             }
 
             window['viewer'] = new mycore.viewer.MyCoReViewer($( '#image-viewer' ),
