@@ -381,6 +381,10 @@ class GeographicalData
                     $values['type'] = 'special municipality';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300000874':
+                    $values['type'] = 'suburb';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300000745':
                     $values['type'] = 'neighborhood';
                     break;
