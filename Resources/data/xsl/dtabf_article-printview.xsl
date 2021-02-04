@@ -198,7 +198,14 @@
           <xsl:value-of select="@n"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="[I]"/>
+          <xsl:choose>
+            <xsl:when test="$noteplacement = 'perpage'">
+              <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="I"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="[I]"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </a>
@@ -269,7 +276,14 @@
             <xsl:value-of select="@n"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="[I]"/>
+            <xsl:choose>
+              <xsl:when test="$noteplacement = 'perpage'">
+                <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="I"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="[I]"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
       </a>
@@ -302,19 +316,31 @@
       <xsl:for-each select="//tei:note[@place='foot' and string-length(@prev) = 0][not(./following::tei:pb)]">
         <xsl:apply-templates select="." mode="footnotes"/>
       </xsl:for-each>
+      <xsl:for-each select="//tei:note[@place='end' and string-length(@prev) > 0][not(./following::tei:pb)]">
+        <xsl:apply-templates select="." mode="footnotes"/>
+      </xsl:for-each>
+      <xsl:for-each select="//tei:note[@place='end' and string-length(@prev) = 0][not(./following::tei:pb)]">
+        <xsl:apply-templates select="." mode="footnotes"/>
+      </xsl:for-each>
     </xsl:if>
     <xsl:apply-templates select='//tei:fw[@place="bottom" and (text() or *)]' mode="signatures"/>
   </xsl:template>
 
   <xsl:template match='tei:pb'>
     <xsl:variable name="thisSite" select="."/>
-    <xsl:if test="preceding::tei:note[@place='foot'][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+    <xsl:if test="preceding::tei:note[@place='foot' or @place='end'][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
       <div class="endnotes-wrapper" style="display:block">
         <div style="height: 24px; width: 36px" />
         <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) > 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
           <xsl:apply-templates select="." mode="footnotes"/>
         </xsl:for-each>
         <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) = 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+          <xsl:apply-templates select="." mode="footnotes"/>
+        </xsl:for-each>
+        <xsl:for-each select="preceding::tei:note[@place='end' and string-length(@prev) > 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+          <xsl:apply-templates select="." mode="footnotes"/>
+        </xsl:for-each>
+        <xsl:for-each select="preceding::tei:note[@place='end' and string-length(@prev) = 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
           <xsl:apply-templates select="." mode="footnotes"/>
         </xsl:for-each>
       </div>

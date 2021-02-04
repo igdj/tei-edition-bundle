@@ -249,7 +249,7 @@
                 <xsl:element name="h{parent::tei:div/@n}">
                   <xsl:call-template name="applyRendition">
                     <xsl:with-param name="class" select="'dta-head'"/>
-                    <xsl:with-param name="id">section-<xsl:value-of select="count(../preceding-sibling::tei:div) + 1"/></xsl:with-param>
+                    <xsl:with-param name="id">section-<xsl:value-of select="count(../preceding::tei:div) + 1"/></xsl:with-param>
                   </xsl:call-template>
                   <xsl:apply-templates/>
                 </xsl:element>
