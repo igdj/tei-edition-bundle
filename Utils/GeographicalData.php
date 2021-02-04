@@ -233,6 +233,10 @@ class GeographicalData
                     $values['type'] = 'mountain range';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008777':
+                    $values['type'] = 'hill';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300128207':
                     $values['type'] = 'nation';
                     break;
