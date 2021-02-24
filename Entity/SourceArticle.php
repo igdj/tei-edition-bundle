@@ -81,17 +81,29 @@ extends Article
     public function jsonLdSerialize($locale, $omitContext = false)
     {
         $ret = parent::jsonLdSerialize($locale, $omitContext);
+
         if (!empty($this->creator)) {
             $ret['creator'] = $this->creator;
         }
+
         if (!empty($this->dateCreated)) {
             $ret['dateCreated'] = \TeiEditionBundle\Utils\JsonLd::formatDate8601($this->dateCreated);
         }
+
         if (isset($this->contentLocation)) {
-            $ret['contentLocation'] = $this->contentLocation->jsonLdSerialize($locale, true);
+            $ret['spatialCoverage'] = $this->contentLocation->jsonLdSerialize($locale, true);
         }
+
         if (isset($this->provider)) {
             $ret['provider'] = $this->provider->jsonLdSerialize($locale, true);
+        }
+
+        if (empty($ret['keywords']) && !is_null($this->isPartOf)) {
+            // keywords are assigned to the interpretations
+            $keywords = $this->isPartOf->getKeywords();
+            if (!empty($keywords)) {
+                $ret['keywords'] = join(', ', $keywords);
+            }
         }
 
         return $ret;

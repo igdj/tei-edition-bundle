@@ -1326,6 +1326,10 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
             }
         }
 
+        if (!empty($this->keywords)) {
+            $ret['keywords'] = join(', ', $this->keywords);
+        }
+
         return $ret;
     }
 

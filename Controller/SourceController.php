@@ -80,11 +80,26 @@ extends ArticleController
         $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
     }
 
+    protected function buildJsonLdResponse(Request $request, TranslatorInterface $translator, SourceArticle $sourceArticle)
+    {
+        $jsonLd = $sourceArticle->jsonLdSerialize($request->getLocale());
+
+        if (empty($jsonLd['thumbnailUrl'])) {
+            // use og:image to set this property
+            $og = $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]);
+            if (!empty($og['og:image'])) {
+                $jsonLd['thumbnailUrl'] = $og['og:image'];
+            }
+        }
+
+        return new JsonLdResponse($jsonLd);
+    }
+
     protected function renderSourceViewer(Request $request, TranslatorInterface $translator, $uid, SourceArticle $sourceArticle)
     {
         if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
             // return jsonld-rendition
-            return new JsonLdResponse($sourceArticle->jsonLdSerialize($request->getLocale()));
+            return $this->buildJsonLdResponse($request, $translator, $sourceArticle);
         }
 
         $generatePrintView = 'source-pdf' == $request->get('_route');
