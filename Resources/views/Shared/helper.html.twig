@@ -356,9 +356,10 @@
                                 </a>
                             </dd>
                             {% if not printview %}
-                            <dt><a href="#" onClick="$('#metadata').toggle(); return false">{{ 'Download Metadata'|trans }}</a></dt>
+                            <dt><a href="#" onClick="$('#metadata').toggle(); return false">{{ 'Download Research Data'|trans }}</a></dt>
                             <dd id="metadata" style="display: none;">
                                 <ul class="list-unstyled" style="margin-bottom: 0">
+                                <li><a target="_blank" href="{{ url('source-tei', { 'uid': meta.uid }) }}">TEI P5</a></li>
                                 <li><a target="_blank" href="{{ url('source-jsonld', { 'uid': meta.uid }) }}">JSON-LD</a></li>
                                 {% if mets is not empty %}
                                 <li><a target="_blank" href="{{ url('source-mets', { 'uid': meta.uid }) }}">METS-XML</a></li>

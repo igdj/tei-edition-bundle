@@ -650,6 +650,32 @@ EOT;
 
     /**
      *
+     * @Route("/source/{uid}.tei.xml", name="source-tei")
+     *
+     * For downloadable sources, send TEI
+     *
+     */
+    public function teiAction(Request $request, $uid)
+    {
+        $article = $this->findSourceArticle($uid, $request->getLocale());
+
+        if (!$article) {
+            throw $this->createNotFoundException('This source does not exist');
+        }
+
+        if ($article->licenseAllowsDownload()) {
+            $fname = $this->buildArticleFname($article);
+            $fnameFull = $this->locateTeiResource($fname);
+            return new \Symfony\Component\HttpFoundation\Response(file_get_contents($fnameFull) , 200, [
+                'Content-Type' => 'text/xml;charset=UTF-8'
+            ]);
+        }
+
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('source', [ 'uid' => $uid ]));
+    }
+
+    /**
+     *
      * @Route("/source/{uid}.mets.xml", name="source-mets")
      *
      * For downloadable sources, adjust the METS-container so it works well
