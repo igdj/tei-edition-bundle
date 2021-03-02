@@ -1,0 +1,7 @@
+        <div class="col-sm-4 sidebar">
+            <a class="rss" href="{{ path('article-index-rss') }}">
+                {{ 'Subscribe to new Articles (RSS)'|trans }}
+            </a>
+            {% block article_sidebar_additional %}
+            {% endblock %}
+        </div><!-- .sidebar.col-sm4 -->
