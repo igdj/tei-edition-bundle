@@ -111,6 +111,7 @@ extends BaseCommand
             if (!is_dir($baseDir . '/' . $targetPath)) {
                 mkdir($baseDir . '/' . $targetPath);
             }
+
             $targetDir = realpath($baseDir . '/' . $targetPath);
             if (empty($targetDir)) {
                 $output->writeln(sprintf('<error>%s could not be created</error>', $targetPath));
