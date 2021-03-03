@@ -79,9 +79,8 @@ abstract class DnbData
 
             case 'https://d-nb.info/standards/elementset/gnd#ConferenceOrEvent':
                 # TODO: e.g. Wiener Kongress, https://d-nb.info/gnd/2026986-9
-            case 'https://d-nb.info/standards/elementset/gnd#SeriesOfConferenceOrEvent': # e.g. Berlinale
-            case 'https://d-nb.info/standards/elementset/gnd#HistoricSingleEventOrEra':
-            case 'https://d-nb.info/standards/elementset/gnd#SubjectHeadingSensoStricto';
+            case 'https://d-nb.info/standards/elementset/gnd#SeriesOfConferenceOrEvent':
+                # TODO: e.g. Berlinale
                 break; // currently ignore
 
             default:
