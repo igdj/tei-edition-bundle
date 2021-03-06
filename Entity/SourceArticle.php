@@ -70,6 +70,7 @@ extends Article
                 'http://creativecommons.org/licenses/by-sa/4.0/',
                 'http://creativecommons.org/licenses/by-nc-sa/4.0/',
                 'http://creativecommons.org/licenses/by-nc-nd/4.0/',
+                'http://rightsstatements.org/vocab/NoC-NC/1.0/',
             ]))
         {
             return true;
