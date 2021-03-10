@@ -331,23 +331,6 @@ extends BaseCommand
                         if (!empty($places)) {
                             $place = $places[0];
                         }
-                        else {
-                            $geo = \TeiEditionBundle\Utils\GeographicalData::fetchByIdentifier('gnd' . ':' . $placeInfo['gnd']);
-                            if (!empty($geo) && !empty($geo->sameAs)) {
-                                foreach ($geo->sameAs as $uri) {
-                                    if (preg_match('/^'
-                                                   . preg_quote('http://sws.geonames.org/', '/')
-                                                   . '(\d+)$/', $uri, $matches))
-                                    {
-                                        $geonamesId = $matches[1];
-                                        $places = $this->em->getRepository('\TeiEditionBundle\Entity\Place')->findByGeonames($geonamesId);
-                                        if (!empty($places)) {
-                                            $place = $places[0];
-                                        }
-                                    }
-                                }
-                            }
-                        }
 
                         if (!is_null($place)) {
                             $method = 'set' . ucfirst($property) . 'Place';
@@ -526,14 +509,6 @@ extends BaseCommand
         $gndBeacon = $this->loadGndBeacon([ 'dasjuedischehamburg' => 'BEACON-GND-ORG-dasjuedischehamburg.txt' ]);
 
         $organizationRepository = $this->em->getRepository('\TeiEditionBundle\Entity\Organization');
-        /*
-        foreach ($organizationRepository->findAll() as $organization) {
-            $organization->setAlternateName($organization->getAlternateName());
-            $this->em->persist($organization);
-        }
-        $this->flushEm($this->em);
-        return;
-        */
 
         $organizations = $organizationRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($organizations as $organization) {
@@ -556,55 +531,6 @@ extends BaseCommand
                 $this->flushEm($this->em);
             }
         }
-
-        // currently only homepages
-        /*
-        $organizationRepository = $this->em->getRepository('\TeiEditionBundle\Entity\Organization');
-        $organizations = $organizationRepository->findBy([ 'url' => null ]);
-        foreach ($organizations as $organization) {
-            $persist = false;
-            $gnd = $organization->getGnd();
-            if (empty($gnd)) {
-                continue;
-            }
-
-            $corporateBody = \TeiEditionBundle\Utils\CorporateBodyData::fetchByGnd($gnd);
-            if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
-                continue;
-            }
-
-            // the following were missing in the beginning
-            foreach ([
-                      'dateOfTermination',
-                      'homepage',
-                      ] as $src)
-            {
-                if (!empty($corporateBody->{$src})) {
-                    switch ($src) {
-                        case 'dateOfTermination':
-                            $val = $organization->getDissolutionDate();
-                            if (empty($val)) {
-                                $organization->setDissolutionDate($corporateBody->{$src});
-                                $persist = true;
-                            }
-                            break;
-
-                        case 'homepage':
-                            $val = $organization->getUrl();
-                            if (empty($val)) {
-                                $organization->setUrl($corporateBody->{$src});
-                                $persist = true;
-                            }
-                            break;
-                    }
-                }
-            }
-            if ($persist) {
-                $this->em->persist($organization);
-                $this->flushEm($this->em);
-            }
-        }
-        */
 
         return 0;
     }
