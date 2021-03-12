@@ -119,12 +119,12 @@
                     </div>
                 </div><!-- .row -->
     {% else %}
-            Es wurden keine Quellen gefunden
+            {{ 'No sources could be found'|trans }}
     {% endif %}
             </div><!-- #timeline -->
         </div><!-- .col-xs-12 col-md-9 -->
         <div class="col-md-3 hidden-sm hidden-xs sidebar">
-    {% if not embedded and epochs is not empty %}
+    {% if not embedded and epochs is defined and epochs is not empty %}
             <div id="epoch-navigation" class="container-fluid box" style="background-color: white;  z-index: 1">
                 <div class="row box-color-title">
                     <div class="col-sm-12">

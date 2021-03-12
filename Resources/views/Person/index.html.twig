@@ -28,7 +28,7 @@
         {% endfor %}
             </ul>
         {% else %}
-            Es wurden keine Personen gefunden
+            {{ 'No persons could be found'|trans }}
         {% endif %}
         </div>
         {% if 'about-authors' == app.request.attributes.get('_route') %}
