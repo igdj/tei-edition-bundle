@@ -50,8 +50,7 @@
         "brunty/relax-ng-domdocument": "~0.2",
         "html2text/html2text": "^4.3",
 
-        "sweetyrdf/easyrdf": "^1.1",
-        "ml/json-ld": "1.1.*",
+        "igdj/lod-service": "@dev",
 
         "citation-style-language/locales": "@dev",
         "seboettg/citeproc-php": "^2.2",

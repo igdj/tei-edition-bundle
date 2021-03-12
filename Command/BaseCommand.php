@@ -11,9 +11,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Cocur\Slugify\SlugifyInterface;
+
 use Doctrine\ORM\EntityManagerInterface;
 
-use Cocur\Slugify\SlugifyInterface;
+use LodService\LodService;
+use LodService\Provider\DnbProvider;
+use LodService\Provider\GettyVocabulariesProvider;
+use LodService\Identifier\GndIdentifier;
+use LodService\Identifier\TgnIdentifier;
 
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
@@ -168,54 +174,46 @@ extends Command
         foreach ($condition as $field => $value) {
             switch ($field) {
                 case 'gnd':
-                    $bio = \TeiEditionBundle\Utils\BiographicalData::fetchByGnd($value);
-                    if (is_null($bio) || !$bio->isDifferentiated) {
+                    $lodService = new LodService(new DnbProvider());
+                    $resource = $lodService->fetch(new GndIdentifier($value));
+
+                    if (is_null($resource) || !($resource instanceof \LodService\Model\Person)) {
                         return -1;
                     }
 
                     $person->setGnd($value);
 
-                    // TODO: use hydrator
+                    //  move properties from $resource to $person
                     foreach ([
-                            'surname',
-                            'forename',
+                            'familyName',
+                            'givenName',
+                            'disambiguatingDescription',
                             'gender',
-                            'dateOfBirth',
-                            'dateOfDeath',
-                            'biographicalInformation',
+                            'birthDate',
+                            'deathDate',
                         ] as $src)
                     {
-                        if (!empty($bio->{$src})) {
+                        $getter = 'get' . ucfirst($src);
+                        $setter = 'set' . ucfirst($src);
+                        $value = $resource->$getter();
+
+                        if (!empty($value)) {
                             switch ($src) {
-                                case 'surname':
-                                    $person->setFamilyName($bio->{$src});
-                                    break;
-
-                                case 'forename':
-                                    $person->setGivenName($bio->{$src});
-                                    break;
-
                                 case 'gender':
-                                    $gender = $bio->{$src};
-                                    if ('Female' == $gender) {
+                                    if ('Female' == $value) {
                                         $person->setGender('F');
                                     }
-                                    else if ('Male' == $gender) {
+                                    else if ('Male' == $value) {
                                         $person->setGender('M');
                                     }
                                     break;
 
-                                case 'dateOfBirth':
-                                    $person->setBirthDate($bio->{$src});
+                                case 'disambiguatingDescription':
+                                    $person->setDescription([ 'de' => $value ]);
                                     break;
 
-                                case 'dateOfDeath':
-                                    $person->setDeathDate($bio->{$src});
-                                    break;
-
-                                case 'biographicalInformation':
-                                    $person->setDescription([ 'de' => $bio->{$src} ]);
-                                    break;
+                                default:
+                                    $person->$setter($value);
                             }
                         }
                     }
@@ -262,46 +260,38 @@ extends Command
         foreach ($condition as $field => $value) {
             switch ($field) {
                 case 'gnd':
-                    $corporateBody = \TeiEditionBundle\Utils\CorporateBodyData::fetchByGnd($value);
-                    if (is_null($corporateBody)) {
+                    $lodService = new LodService(new DnbProvider());
+                    $resource = $lodService->fetch(new GndIdentifier($value));
+
+                    if (is_null($resource) || !($resource instanceof \LodService\Model\Organization)) {
                         return -1;
                     }
 
-                    // var_dump($corporateBody);
-                    // TODO: use hydrator
+                    $organization->setGnd($value);
+
+                    //  move properties from $resource to $organization
                     foreach ([
-                            'preferredName',
-                            'dateOfEstablishment',
-                            'dateOfTermination',
-                            'biographicalInformation',
-                            'homepage',
+                            'name',
+                            'foundingDate',
+                            'dissolutionDate',
+                            'disambiguatingDescription',
+                            'url',
                         ] as $src)
                     {
-                        if (!empty($corporateBody->{$src})) {
+                        $getter = 'get' . ucfirst($src);
+                        $setter = 'set' . ucfirst($src);
+                        $value = $resource->$getter();
+                        if (!empty($value)) {
                             switch ($src) {
-                                case 'preferredName':
-                                    $organization->setName($corporateBody->{$src});
+                                case 'disambiguatingDescription':
+                                    $organization->setDescription([ 'de' => $value ]);
                                     break;
 
-                                case 'dateOfEstablishment':
-                                    $organization->setFoundingDate($corporateBody->{$src});
-                                    break;
-
-                                case 'dateOfTermination':
-                                    $organization->setDissolutionDate($corporateBody->{$src});
-                                    break;
-
-                                case 'biographicalInformation':
-                                    $organization->setDescription([ 'de' => $corporateBody->{$src} ]);
-                                    break;
-
-                                case 'homepage':
-                                    $organization->setUrl($corporateBody->{$src});
-                                    break;
+                                default:
+                                    $organization->$setter($value);
                             }
                         }
                     }
-                    $organization->setGnd($value);
                     break;
 
                 default:
@@ -380,20 +370,36 @@ extends Command
                 case 'tgn':
                     var_dump($prefix . ':' . $value);
 
-                    $geo = \TeiEditionBundle\Utils\GeographicalData::fetchByIdentifier($prefix . ':' . $value);
-                    if (empty($geo) || empty($geo->preferredName)) {
-                        var_dump($geo);
+                    $lodService = new LodService(new GettyVocabulariesProvider());
+                    $resource = $lodService->fetch(new TgnIdentifier($value));
+
+                    if (is_null($resource) || !($resource instanceof \LodService\Model\Place)) {
+                        return -1;
+                    }
+
+                    if (empty($resource->getName())) {
+                        var_dump($resource);
                         die($tgn);
                     }
 
+                    $entity->setTgn($value);
+
                     $parent = null;
-                    if (!empty($geo->tgnParent)) {
+
+                    $containedInPlace = $resource->getContainedInPlace();
+                    if (!is_null($containedInPlace)) {
+                        $tgnParent = $containedInPlace->getIdentifier('tgn');
+                        if (is_null($tgnParent)) {
+                            var_dump($tgnParent);
+                            die('No tgn identifier found');
+                        }
+
                         $parent = $this->em->getRepository('TeiEditionBundle\Entity\Place')->findOneBy([
-                            'tgn' => $geo->tgnParent,
+                            'tgn' => $tgnParent->getValue(),
                         ]);
 
                         if (is_null($parent)) {
-                            $res = $this->insertMissingPlace('http://vocab.getty.edu/tgn/' . $geo->tgnParent);
+                            $res = $this->insertMissingPlace($tgnParent->toUri());
                             if ($res >= 0) {
                                 $parent = $this->em->getRepository('TeiEditionBundle\Entity\Place')->findOneBy([ 'tgn' => $geo->tgnParent ]);
                             }
@@ -414,34 +420,37 @@ extends Command
                         }
                     }
 
-                    // TODO: use hydrator
+                    //  move properties from $resource to $entity
                     foreach ([
-                            'type',
-                            'preferredName', 'alternateName',
-                            'latitude',
+                            'name', 'alternateName',
+                            'geo',
+                            'additionalType',
                         ] as $src)
                     {
-                        if (!empty($geo->{$src})) {
+                        $getter = 'get' . ucfirst($src);
+                        $setter = 'set' . ucfirst($src);
+                        $value = $resource->$getter();
+
+                        if (!empty($value)) {
                             switch ($src) {
-                                case 'preferredName':
-                                    $entity->setName($geo->{$src});
+                                case 'additionalType':
+                                    $type = \TeiEditionBundle\Entity\Place::mapAatToType($value);
+                                    if (is_null($type)) {
+                                        die('No aatToType registered for ' . $value);
+                                    }
+                                    $entity->setType($type);
                                     break;
 
-                                case 'alternateName':
-                                    $entity->setAlternateName($geo->{$src});
+                                case 'geo':
+                                    $entity->setGeo($value->getLatLong());
+                                    $entity->setCountryCode($value->getAddressCountry());
                                     break;
 
-                                case 'type':
-                                    $entity->setType($geo->{$src});
-                                    break;
-
-                                case 'latitude':
-                                    $entity->setGeo(join(',', [ $geo->latitude, $geo->longitude ]));
-                                    break;
+                                default:
+                                    $entity->$setter($value);
                             }
                         }
                     }
-                    $entity->setTgn($value);
                     break;
 
                 default:
@@ -512,36 +521,38 @@ extends Command
         foreach ($condition as $prefix => $value) {
             switch ($prefix) {
                 case 'gnd':
-                    $event = \TeiEditionBundle\Utils\HistoricEventData::fetchByGnd($value);
-                    if (is_null($event)) {
+                    $lodService = new LodService(new DnbProvider());
+                    $resource = $lodService->fetch(new GndIdentifier($value));
+
+                    if (is_null($resource) || !($resource instanceof \LodService\Model\DefinedTerm)) {
                         return -1;
                     }
 
-                    // TODO: use hydrator
+                    $entity->setGnd($value);
+
+                    //  move properties from $resource to $entity
                     foreach ([
-                            'preferredName',
-                            'associatedDate',
-                            'definition',
+                            'name',
+                            'disambiguatingDescription',
+                            'startDate',
+                            'endDate',
                         ] as $src)
                     {
-                        if (!empty($event->{$src})) {
+                        $getter = 'get' . ucfirst($src);
+                        $setter = 'set' . ucfirst($src);
+                        $value = $resource->$getter();
+
+                        if (!empty($value)) {
                             switch ($src) {
-                                case 'preferredName':
-                                    $entity->setName($event->{$src});
+                                case 'disambiguatingDescription':
+                                    $entity->setDescription([ 'de' => $value ]);
                                     break;
 
-                                case 'associatedDate':
-                                    $entity->setStartDate($event->{$src});
-                                    break;
-
-                                case 'definition':
-                                    $entity->setDescription([ 'de' => $event->{$src} ]);
-                                    break;
-
+                                default:
+                                    $entity->$setter($value);
                             }
                         }
                     }
-                    $entity->setGnd($value);
                     break;
 
                 default:
