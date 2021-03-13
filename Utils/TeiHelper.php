@@ -14,12 +14,40 @@ class TeiHelper
         return $this->errors;
     }
 
+    protected function findIdentifierByUri($uri)
+    {
+        static $registered = false;
+
+        if (!$registered) {
+            \LodService\Identifier\Factory::register(\LodService\Identifier\GndIdentifier::class);
+            \LodService\Identifier\Factory::register(\LodService\Identifier\WikidataIdentifier::class);
+
+            $registered = true;
+        }
+
+        return \LodService\Identifier\Factory::fromUri($uri);
+    }
+
     public function buildPerson($element)
     {
         $person = new \TeiEditionBundle\Entity\Person();
 
         if (!empty($element['corresp'])) {
             $person->setSlug((string)$element['corresp']);
+        }
+
+        if (!empty($element['ref'])) {
+            $refs = explode('/\s+/', $element['ref']);
+            foreach ($refs as $ref) {
+                $identifier = $this->findIdentifierByUri($ref);
+                if (!is_null($identifier)) {
+                    switch ($identifier->getName()) {
+                        case 'gnd':
+                            $person->setGnd($identifier->getValue());
+                            break;
+                    }
+                }
+            }
         }
 
         return $person;
@@ -144,6 +172,7 @@ class TeiHelper
                 if (!isset($article->author)) {
                     $article->author = [];
                 }
+
                 $article->author[] = $person;
             }
         }
