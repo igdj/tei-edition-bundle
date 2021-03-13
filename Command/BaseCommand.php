@@ -401,7 +401,7 @@ extends Command
                         if (is_null($parent)) {
                             $res = $this->insertMissingPlace($tgnParent->toUri());
                             if ($res >= 0) {
-                                $parent = $this->em->getRepository('TeiEditionBundle\Entity\Place')->findOneBy([ 'tgn' => $geo->tgnParent ]);
+                                $parent = $this->em->getRepository('TeiEditionBundle\Entity\Place')->findOneBy([ 'tgn' => $tgnParent->getValue() ]);
                             }
                         }
                     }
