@@ -77,7 +77,7 @@ extends BaseController
               . "\n";
 
         $ret .= '#NAME: '
-              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'))
+              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'), [], 'additional')
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 

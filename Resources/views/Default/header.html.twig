@@ -1,0 +1,43 @@
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12" style="position: relative">
+                        <div style="position: absolute; right: 18px; z-index: 100">
+                            {{ knp_menu_render('top') }}
+                            {% if locales|length > 1  and app.request.attributes.get("_route") is not null %}
+                            <ul id="menu-lang" class="list-inline">
+                            {% for locale in locales %}
+                                <li{% if locale == app.request.locale %} class="current"{% endif %}>
+                                    {% if route_params_locale_switch is defined and route_params_locale_switch is not empty and route_params_locale_switch[locale] is defined %}
+                                        {% set route_params = route_params_locale_switch[locale] %}
+                                    {% else %}
+                                        {% set route_params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+                                    {% endif %}
+                                    <a href="{{ path(app.request.attributes.get('_route'), route_params|merge({"_locale": locale})) }}">{{ locale }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                            {% endif %}
+                            {% block header_institution %}{% endblock %}
+                        </div>
+                    </div>
+                    <div class="col-sm-12" id="site-name">
+                        <h1>
+                            <a href="{{ path('home') }}">{{ siteName|trans({}, 'additional') }}</a><br />
+                            <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ siteTagline|trans({}, 'additional') }}</a>
+                        </h1>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ knp_menu_render('main') }}
+                    </div>
+                    <div id="header-search-wrapper" class="col-sm-3 hidden-xs">
+                        <form action="{{ path('search-index') }}" method="post">
+                            <div class="form-group has-feedback" style="margin-bottom: 0">
+                            <input autocomplete="off" id="header-search" name="q" type="text" placeholder="{{ 'Search'|trans }}" />
+                            <i style="margin-top: -2px; pointer-events: inherit" onclick=" $(this).closest('form').submit()" class="glyphicon glyphicon-search form-control-feedback"></i>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>

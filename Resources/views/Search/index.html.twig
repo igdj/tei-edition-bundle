@@ -30,7 +30,7 @@
 
         {% if meta is not empty %}
         <div class="alert alert-info">
-            {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|trans({ 'count': pagination.getTotalItemCount }) }}
+            {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|trans({ 'count': pagination.getTotalItemCount }, 'additional') }}
             {% if meta.query is not empty %}
                 {{ 'for'|trans }}
                 <b>{{ meta.query }}</b>
@@ -39,7 +39,7 @@
                 {{ 'limited to'|trans }}
                 {% for key,val in pagination.params.filter %}
                     {% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}
-                    <b>{{ (val ~ '.oneormany')|trans({ 'count': pagination.getTotalItemCount }) }}</b>
+                    <b>{{ (val ~ '.oneormany')|trans({ 'count': pagination.getTotalItemCount }, 'additional') }}</b>
                 {% endfor %}
             {% endif %}
         </div>
@@ -78,7 +78,7 @@
                     {% set transkey = val ~ '.oneormany' %}
                     <li{% if active %} class="active"{% endif %}>
                         <a href="{{ path('search-index', params) }}">
-                            {{ transkey|trans({ 'count': count }) }}
+                            {{ transkey|trans({ 'count': count }, 'additional') }}
                         </a> ({{ count }})
                     </li>
                     {% endfor %}

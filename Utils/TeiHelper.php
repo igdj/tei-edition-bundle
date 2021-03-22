@@ -745,15 +745,17 @@ class TeiHelper
 
     public function extractEntities($fname)
     {
-        $input = file_get_contents($fname);
         $reader = new CollectingReader();
 
         $reader->elementMap = [
+            '{http://www.tei-c.org/ns/1.0}editor' => '\\TeiEditionBundle\\Utils\\CollectingReader::collectElement',
             '{http://www.tei-c.org/ns/1.0}persName' => '\\TeiEditionBundle\\Utils\\CollectingReader::collectElement',
             '{http://www.tei-c.org/ns/1.0}placeName' => '\\TeiEditionBundle\\Utils\\CollectingReader::collectElement',
             '{http://www.tei-c.org/ns/1.0}orgName' => '\\TeiEditionBundle\\Utils\\CollectingReader::collectElement',
             '{http://www.tei-c.org/ns/1.0}date' => '\\TeiEditionBundle\\Utils\\CollectingReader::collectElement',
         ];
+
+        $input = file_get_contents($fname);
 
         $additional = [];
         try {
@@ -762,6 +764,7 @@ class TeiHelper
             foreach ($output as $entity) {
                 $attribute = '{http://www.tei-c.org/ns/1.0}date' == $entity['name']
                     ? 'corresp' : 'ref';
+
                 if (empty($entity['attributes'][$attribute])) {
                   continue;
                 }
@@ -845,9 +848,11 @@ class TeiHelper
                     if (!isset($additional[$type])) {
                         $additional[$type] = [];
                     }
+
                     if (!isset($additional[$type][$uri])) {
                         $additional[$type][$uri] = 0;
                     }
+
                     ++$additional[$type][$uri];
                 }
             }
@@ -963,16 +968,33 @@ extends \Sabre\Xml\Reader
     static function collectElement(CollectingReader $reader)
     {
         $name = $reader->getClark();
-        // var_dump($name);
-        $attributes = $reader->parseAttributes();
 
-        $res = [
-            'name' => $name,
-            'attributes' => $attributes,
-            'text' => $reader->readText(),
-        ];
+        switch ($name) {
+            case '{http://www.tei-c.org/ns/1.0}editor':
+                $attributes = $reader->parseAttributes();
 
-        $reader->collect($res);
+                // ignore persName / orgName below <editor corresp="#DTACorpusPublisher">
+                $isDTACorpusPublisher = !empty($attributes['corresp'])
+                    && $attributes['corresp'] == '#DTACorpusPublisher';
+
+                if (!$isDTACorpusPublisher) {
+                    // must come before $reader->readText() below
+                    $children = $reader->parseInnerTree();
+                    foreach ($children as $child) {
+                        $reader->collect($child);
+                    }
+                }
+                break;
+
+            default:
+                $res = [
+                    'name' => $name,
+                    'attributes' => $reader->parseAttributes(),
+                    'text' => $reader->readText(),
+                ];
+
+                $reader->collect($res);
+        }
 
         $reader->next();
     }

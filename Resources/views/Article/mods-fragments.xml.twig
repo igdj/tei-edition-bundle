@@ -32,7 +32,7 @@ Template for mods for dfg-viewer
       <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
         <mods:relatedItem type="series">
           <mods:titleInfo>
-            <mods:title>{{ siteName|trans }}</mods:title>
+            <mods:title>{{ siteName|trans({}, 'additional') }}</mods:title>
           </mods:titleInfo>
         </mods:relatedItem>
         <mods:titleInfo>

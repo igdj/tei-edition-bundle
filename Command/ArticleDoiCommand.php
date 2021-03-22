@@ -392,7 +392,7 @@ extends BaseCommand
                 // set standard rights for this license
                 switch ($rightsAttr['rightsURI']) {
                     case 'http://creativecommons.org/licenses/by-nc-nd/4.0/':
-                        $rights = $this->translator->trans('license.by-nc-nd');
+                        $rights = $this->translator->trans('license.by-nc-nd', [], 'additional');
                         break;
                 }
             }

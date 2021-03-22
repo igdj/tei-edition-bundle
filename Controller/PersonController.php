@@ -46,12 +46,12 @@ extends BaseController
                 ;
         }
 
-        $persons = $qb->getQuery()->getResult();
+        $labelAuthors = $translator->trans('Authors');
+        $labelPersons = $translator->trans('Persons');
 
         return $this->render('@TeiEdition/Person/index.html.twig', [
-            'pageTitle' => /** @Ignore */
-                $translator->trans($authorsOnly ? 'Authors' : 'Persons'),
-            'persons' => $persons,
+            'pageTitle' => $authorsOnly ? $labelAuthors : $labelPersons,
+            'persons' => $qb->getQuery()->getResult(),
         ]);
     }
 
@@ -85,7 +85,7 @@ extends BaseController
               . "\n";
 
         $ret .= '#NAME: '
-              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'))
+              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'), [], 'additional')
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 

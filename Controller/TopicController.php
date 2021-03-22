@@ -59,14 +59,14 @@ extends RenderTeiController
         return $topic;
     }
 
-    protected function buildTopicsBySlug(TranslatorInterface $translator, $translate_keys = false)
+    protected function buildTopicsBySlug(TranslatorInterface $translator, $translateKeys = false)
     {
         $topics = [];
         foreach (self::$TOPICS as $label) {
             /** @Ignore */
-            $label_translated = $translator->trans($label);
-            $key = $this->slugify($translate_keys ? $label_translated : $label);
-            $topics[$key] = $label_translated;
+            $labelTranslated = $translator->trans($label);
+            $key = $this->slugify($translateKeys ? $labelTranslated : $label);
+            $topics[$key] = $labelTranslated;
         }
 
         return $topics;
@@ -160,7 +160,7 @@ extends RenderTeiController
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl', [ 'params' => $params ]);
 
-        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
         $html = $this->adjustRefs($html, $refs, $translator, $language);
 
         $html = $this->adjustMedia($html,
@@ -176,7 +176,7 @@ extends RenderTeiController
                 'name' => $topics[$slug],
                 'html' => preg_replace('/<\/?body>/', '', $html),
                 'authors' => $authors,
-                'section_headers' => $section_headers,
+                'section_headers' => $sectionHeaders,
                 'license' => $license,
             ]);
 
@@ -268,7 +268,7 @@ extends RenderTeiController
             'html' => $html,
             'meta' => $meta,
             'authors' => $authors,
-            'section_headers' => $section_headers,
+            'section_headers' => $sectionHeaders,
             'license' => $license,
             'entity_lookup' => $entityLookup,
             'bibitem_lookup' => $bibitemLookup,

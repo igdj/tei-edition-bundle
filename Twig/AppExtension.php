@@ -86,6 +86,9 @@ extends AbstractExtension
         return \TeiEditionBundle\Utils\Formatter::dateIncomplete($datestr, $locale);
     }
 
+    /**
+     *
+     */
     public function epochFilter($epoch, $class, $locale = null)
     {
         if (is_null($locale)) {
@@ -98,7 +101,7 @@ extends AbstractExtension
                 ? abs(intval($epoch / 100)) + 1
                 : '',
             'decade' => is_numeric($epoch) ?  $epoch % 100 : '',
-        ]);
+        ], 'additional');
     }
 
     public function prettifyurlFilter($url)

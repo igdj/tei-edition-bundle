@@ -27,7 +27,7 @@
         {% if place.children|length > 0 %}
             {% set childrenByType = place.getChildrenByType() %}
             {% for type, children in childrenByType %}
-            <h3>{{ type|placeTypeLabel(children|length)|trans }}</h3>
+            <h3>{{ type|placeTypeLabel(children|length)|trans({}, 'place-types') }}</h3>
             <ul>
                 {% for child in childrenByType[type] %}
                 <li><a href="{% if child.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : child.tgn }) }}{% else %}{{ path('place', { 'id' : child.id }) }}{% endif %}">
@@ -41,7 +41,7 @@
         {{ helper.list_entity_mentioned_in(place.articleReferences(app.request.locale)) }}
 
         {% if persons is not empty %}
-        <h3>{{ 'person.oneormany'|trans({ 'count': persons|length }) }}</h3>
+        <h3>{{ 'person.oneormany'|trans({ 'count': persons|length }, 'additional') }}</h3>
         <ul>
         {% for person in persons %}
             <li>

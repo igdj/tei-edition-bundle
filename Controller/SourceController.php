@@ -236,9 +236,9 @@ extends ArticleController
                 $layers = [];
                 foreach ($variants as $variant) {
                     if (in_array($variant, ['transcription', 'transcription_yl'])) {
-                        $label = 'Transcription';
+                        $label = $translator->trans('Transcription');
                         if ('transcription_yl' == $variant) {
-                            $label .= ' (Latin script)';
+                            $label =  $translator->trans('Transcription (Latin script)');
                         }
 
                         if (!array_key_exists($variant, $bodies)) {
@@ -277,7 +277,13 @@ extends ArticleController
                     }
                     else {
                         $keyParts = explode('_', $variant, 2);
-                        $label = ('en' == $keyParts[1] ? 'English' : 'German') . ' Translation';
+                        if ('en' == $keyParts[1]) {
+                            $label = $translator->trans('English Translation');
+                        }
+                        else {
+                            $label = $translator->trans('German Translation');
+                        }
+
                         $body = $bodies[$key];
                     }
 

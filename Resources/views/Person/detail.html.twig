@@ -73,7 +73,7 @@
             {% endif %}
             {% set articles = person.articles(app.request.locale) %}
             {% if articles|length > 0 %}
-            <h3>{{ 'article.oneormany'|trans({ 'count': articles|length }) }}</h3>
+            <h3>{{ 'article.oneormany'|trans({ 'count': articles|length }, 'additional') }}</h3>
             <ul>
             {% for article in articles %}
                 <li>

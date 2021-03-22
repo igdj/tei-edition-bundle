@@ -27,8 +27,8 @@
 
     <header>
         <h1>
-            {{ siteName|trans }}<br />
-            <span style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</span>
+            {{ siteName|trans({}, 'additional') }}<br />
+            <span style="font-size: 14px; font-weight: normal">{{ siteTagline|trans({}, 'additional') }}</span>
         </h1>
     </header>
 

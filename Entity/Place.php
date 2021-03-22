@@ -52,7 +52,7 @@ extends PlaceBase
         'mountain ranges' => 'mountain range',      // http://vocab.getty.edu/aat/300386831
         'mountain systems' => 'mountain system',    // http://vocab.getty.edu/aat/300386832
         'hills' => 'hill',                          // http://vocab.getty.edu/aat/300008777
-        'nation' => 'nations',                      // http://vocab.getty.edu/aat/300128207
+        'nations' => 'nation',                      // http://vocab.getty.edu/aat/300128207
         'countries (sovereign states)' => 'country',// http://vocab.getty.edu/aat/300387506
         'autonomous regions' => 'autonomous region',// http://vocab.getty.edu/aat/300387107
         'autonomous republics' => 'autonomous republic',// http://vocab.getty.edu/aat/300387110

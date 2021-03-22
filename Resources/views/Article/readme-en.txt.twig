@@ -1,6 +1,6 @@
 {% import '@TeiEdition/Shared/helper.html.twig' as helper %}
 {% autoescape false %}
-= Download from the Digital Source Edition {{ siteName|trans }}
+= Download from the Digital Source Edition {{ siteName|trans({}, 'additional') }}
 
 {{ meta.name }}
 
@@ -35,6 +35,6 @@ For additional information, please refer to the Terms and Conditions:
 
 == Recommended Citation
 
-{{ meta.name }}{% if meta.translator is not empty %} ({{ 'translated by'|trans }} {{ meta.translator.fullname(true) }}){% endif %}, in: {{ siteName|trans }}
+{{ meta.name }}{% if meta.translator is not empty %} ({{ 'translated by'|trans }} {{ meta.translator.fullname(true) }}){% endif %}, in: {{ siteName|trans({}, 'additional') }}
     {%- if meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}. <http://jewish-history-online.net/source/{{ meta.uid }}> [Date of last visit].
 {% endautoescape %}

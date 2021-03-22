@@ -43,7 +43,19 @@ extends Article
                 $key = 'epoch.century-bce';
             }
             else {
-                $key = (2 == $bucket / 100) ? 'epoch.century-nd' : 'epoch.century';
+                $key = 'epoch.century';
+                if (0 == $bucket / 100) {
+                    // 1st century
+                    $key = 'epoch.century-st';
+                }
+                else if (1 == $bucket / 100) {
+                    // 2nd century
+                    $key = 'epoch.century-nd';
+                }
+                else if (2 == $bucket / 100) {
+                    // 3rd century
+                    $key = 'epoch.century-rd';
+                }
             }
         }
         else {

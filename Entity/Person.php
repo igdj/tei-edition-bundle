@@ -642,7 +642,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
     private static function buildPlaceInfoFromWikidata($wikidata, $key)
     {
-        if (is_null($wikidata) || !array_key_exists($key, $wikidata)) {
+        if (is_null($wikidata) || !array_key_exists($key, $wikidata) || empty($wikidata[$key])) {
             return;
         }
 

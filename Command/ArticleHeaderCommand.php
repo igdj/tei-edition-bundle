@@ -197,8 +197,18 @@ extends BaseCommand
                 case 'author':
                     $repoClass = 'Person';
                     $key = 'slug';
-                    $value = array_map(function ($related) { return $related->getSlug(); },
-                                       $related);
+                    $value = array_map(function ($related) use (&$key) {
+                            $slug = $related->getSlug();
+                            if (empty($slug)) {
+                                $gnd = $related->getGnd();
+                                if (!empty($gnd)) {
+                                    // lookup by gnd instead
+                                    $key = 'gnd';
+                                    return $gnd;
+                                }
+                            }
+                            return $related->getSlug();
+                        }, $related);
                     $creator = [];
                     break;
 

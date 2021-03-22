@@ -1,0 +1,15 @@
+        {# see https://github.com/mnater/Hyphenopoly#usage-browser #}
+        <script type="text/javascript">
+            var Hyphenopoly = {
+                require: {
+                    "de": "Silbentrennungsalgorithmus",
+                    "en-us": "Supercalifragilisticexpialidocious"
+                },
+                setup: {
+                    selectors: {
+                        ".dta-p": {}
+                    }
+                }
+            };
+        </script>
+        <script src="{{ app.request.basepath }}/vendor/Hyphenopoly-4.5.0/Hyphenopoly_Loader.js" type="text/javascript"></script>

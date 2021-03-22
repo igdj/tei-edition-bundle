@@ -78,7 +78,7 @@
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'source.oneormany'|trans({ 'count': sources[0]|length }) }}</h4>
+                        <h4>{{ 'source.oneormany'|trans({ 'count': sources[0]|length }, 'additional') }}</h4>
                     </div>
                 </div>
                 {% for source in sources[0] %}
@@ -89,7 +89,7 @@
                     <div class="col-sm-12">
                         <h4>
                             <a id="toggleAdditional" data-toggle="collapse" data-target="#additional" class="display-toggle display-toggle-show">
-                            {{ 'additionalsource.oneormany'|trans({ 'count': sources[1]|length }) }}
+                            {{ 'additionalsource.oneormany'|trans({ 'count': sources[1]|length }, 'additional') }}
                             </a>
                         </h4>
                     </div>
@@ -114,7 +114,7 @@
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
+                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }, 'additional') }}</h4>
                     </div>
                 </div>
                 {% for article in interpretations %}

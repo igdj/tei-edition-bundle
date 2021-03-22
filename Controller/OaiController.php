@@ -37,7 +37,7 @@ extends AbstractController
             $router,
             $this->getDoctrine(),
             [
-                'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName']),
+                'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName'], [], 'additional'),
                 'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
             ]);
 

@@ -57,8 +57,8 @@
         {% endif %}
     {% endfor %}
     {% set how_many = authors|length %}
-    {% if all_female %}{{ 'author.oneormany-female'|trans({ 'count': how_many }) }}
-    {% else %}{{ 'author.oneormany'|trans({ 'count': how_many }) }}{% endif %}
+    {% if all_female %}{{ 'author.oneormany-female'|trans({ 'count': how_many }, 'additional') }}
+    {% else %}{{ 'author.oneormany'|trans({ 'count': how_many }, 'additional') }}{% endif %}
 {% endmacro %}
 
 {% macro article_authors(authors) %}
@@ -82,7 +82,7 @@
     <p>{% if authors is not empty %}
         {% for author in authors %}{{ author.text|trim }}, {% endfor %}
     {% endif %}
-    {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif %}, in: {{ siteName|trans }}
+    {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif %}, in: {{ siteName|trans({}, 'additional') }}
     {%- if meta.datePublished is defined and meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is defined and meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}.
     &lt;{% if article.doi is not empty and not ('10.5072' in article.doi) %}<a href="https://dx.doi.org/{{ article.doi }}">https://dx.doi.org/{{ article.doi }}</a>{% else %}{{ url(app.request.attributes.get('_route')|replace({ '-pdf' : ''}), params) }}{% endif %}&gt; [{{ 'now'|date('F d, Y'|trans) }}].</p>
 {% endmacro %}
@@ -201,7 +201,7 @@
 {% macro source_footer(name, article, license) %}
     <h3 id="citation">{{ 'Recommended Citation'|trans }}</h3>
     <p>
-    {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, {{ 'edited in'|trans }}: {{ siteName|trans }},
+    {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, {{ 'edited in'|trans }}: {{ siteName|trans({}, 'additional') }},
     &lt;{% if article.doi is not empty and not ('10.5072' in article.doi) %}<a href="https://dx.doi.org/{{ article.doi }}">https://dx.doi.org/{{ article.doi }}</a>{% else %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endif %}&gt; [{{ 'now'|date('F d, Y'|trans) }}].</p>
 
     {% if license is not null %}
@@ -422,7 +422,7 @@
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
+                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }, 'additional') }}</h4>
                     </div>
                 </div>
         {% for article in interpretations %}
@@ -457,7 +457,7 @@
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'additionalsource.oneormany'|trans({ 'count': related|length }) }}</h4>
+                        <h4>{{ 'additionalsource.oneormany'|trans({ 'count': related|length }, 'additional') }}</h4>
                     </div>
                 </div>
         {% for source in related  %}
@@ -498,7 +498,7 @@
             -
                 {{ person.deathDate|dateincomplete -}}
                 {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
-                    {% if deathPlace.id is not empty %}<a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
+                    {% if deathPlace.id is defined and deathPlace.id is not empty %}<a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
                         {{ deathPlace['name'] -}}</a>{% else %}{{ deathPlace['name'] -}}
                     {% endif -%}
                 {% endif -%}

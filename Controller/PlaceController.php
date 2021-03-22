@@ -173,8 +173,8 @@ extends BaseController
 
         $persons = $qb->getQuery()
             ->setParameter('place', $place)
-            ->getResult();
-
+            ->getResult()
+            ;
 
         return $this->render('@TeiEdition/Place/detail.html.twig', [
             'pageTitle' => $place->getNameLocalized($request->getLocale()),

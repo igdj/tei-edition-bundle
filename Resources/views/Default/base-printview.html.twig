@@ -8,11 +8,10 @@
         {% if pageTitle is defined %}
             {{ pageTitle }} |
         {% endif %}
-        {{ siteName|trans }}
+        {{ siteName|trans({}, 'additional') }}
         </title>
 
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/bootstrap-3.4.0-dist/css/bootstrap.min.css">
+        {% embed '@TeiEdition/Default/head_bootstrap.html.twig' %}{% endembed %}
 
         {#
             triggers scssphp, this one doesn't prepend app.request.basepath
