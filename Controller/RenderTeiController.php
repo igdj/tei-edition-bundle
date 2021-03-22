@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 
 use TeiEditionBundle\Utils\Xsl\XsltProcessor;
+use TeiEditionBundle\Utils\PdfGenerator;
 
 abstract class RenderTeiController
 extends BaseController
@@ -26,15 +27,18 @@ extends BaseController
         \TeiEditionBundle\Utils\RenderTeiTrait; // use shared method renderTei()
 
     protected $xsltProcessor;
+    protected $pdfGenerator;
 
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
                                 SettableThemeContext $themeContext,
-                                XsltProcessor $xsltProcessor)
+                                XsltProcessor $xsltProcessor,
+                                PdfGenerator $pdfGenerator)
     {
         parent::__construct($kernel, $slugify, $themeContext);
 
         $this->xsltProcessor = $xsltProcessor;
+        $this->pdfGenerator = $pdfGenerator;
     }
 
     protected function buildRefLookup($refs, TranslatorInterface $translator, $language)
@@ -461,37 +465,13 @@ extends BaseController
         exit;
         */
 
-        // mpdf
-        $pdfGenerator = new \TeiEditionBundle\Utils\PdfGenerator([
-            'fontDir' => [
-                $this->locateData('font/'),
-            ],
-            'fontdata' => [
-                'roboto' => [
-                    'R' => 'Roboto-Regular.ttf',
-                    'B' => 'Roboto-Bold.ttf',
-                    'I' => 'Roboto-Italic.ttf',
-                    'BI' => 'Roboto-BoldItalic.ttf',
-                    // 'useOTL' => 0xFF, // this font does not have OTL table
-                ],
-                // see https://github.com/OdedEzer/heebo/tree/master/compiled_fonts/ttf
-                'heebo' => [
-                    'R' => 'Heebo-Regular.ttf',
-                    'B' => 'Heebo-Bold.ttf',
-                    'I' => 'Heebo-Regular.ttf',
-                    'BI' => 'Heebo-Bold.ttf',
-                ],
-            ],
-            'default_font' => 'roboto',
-        ]);
-
         $fnameLogo = $this->getProjectDir() . '/web/img/icon/icons_wide.png';
-        $pdfGenerator->imageVars['logo_top'] = file_get_contents($fnameLogo);
+        $this->pdfGenerator->imageVars['logo_top'] = file_get_contents($fnameLogo);
 
         // silence due to https://github.com/mpdf/mpdf/issues/302 when using tables
-        @$pdfGenerator->writeHTML($html);
+        @$this->pdfGenerator->writeHTML($html);
 
-        $pdfGenerator->Output($filename, 'I');
+        $this->pdfGenerator->Output($filename, 'I');
     }
 
     protected function adjustRefs($html, $refs, $translator, $language)
