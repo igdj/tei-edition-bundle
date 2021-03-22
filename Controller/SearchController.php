@@ -59,7 +59,7 @@ extends BaseController
     protected function getSolrClient($request)
     {
         $locale = $request->getLocale();
-        $endpoint = 'jgo_presentation-' . $locale;
+        $endpoint = 'core_' . $locale;
 
         $solrClient = $this->solr->getClient();
 

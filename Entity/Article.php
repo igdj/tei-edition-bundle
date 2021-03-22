@@ -1423,11 +1423,12 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      */
     public function indexHandler()
     {
-        if (!empty($this->language) && 'eng' == $this->language) {
-            return 'jgo_presentation-en';
+        if (!empty($this->language)) {
+            return 'core_' . \TeiEditionBundle\Utils\Iso639::code3To1($this->language);
         }
 
-        return 'jgo_presentation-de';
+        // fallback
+        return 'core_de';
     }
 
     /**
