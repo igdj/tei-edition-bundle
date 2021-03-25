@@ -1,0 +1,28 @@
+        <div class="col-sm-8">
+        {% if persons is not empty %}
+        {% set last_initial = '' %}
+        {% for person in persons %}
+            {% set initial = slugify.slugify(person.fullname|first)|upper %}
+            {% if initial != last_initial %}
+                {% if last_initial != '' %}
+            </ul>
+                {% endif %}
+            <h2>{{ initial }} </h2>
+            {% set last_initial = initial %}
+            <ul class="list-unstyled">
+            {% endif %}
+            <li>
+                <a href="{% if person.gnd is not empty %}{{ path('person-by-gnd', { 'gnd' : person.gnd }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
+                {{ person.fullname }}
+                </a>
+
+                {% if person.birthDate is not empty or person.deathDate is not empty %}
+                    ({{ person.birthDate|dateincomplete }} - {{  person.deathDate|dateincomplete  }})
+                {% endif %}
+            </li>
+        {% endfor %}
+            </ul>
+        {% else %}
+            {{ 'No persons could be found'|trans }}
+        {% endif %}
+        </div>
