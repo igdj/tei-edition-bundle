@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2021-03-13T17:11:14Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2021-03-26T10:48:11Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -10,18 +10,6 @@
         <source>...read on</source>
         <target>...mehr</target>
         <jms:reference-file line="160">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Shared\entity-lookup.html.twig\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="aa2fc7f7cb0a84e35a338368cb01b202686ebcb4" resname="A Digital Source Edition">
-        <source>A Digital Source Edition</source>
-        <target>Eine digitale Quellenedition</target>
-        <jms:reference-file line="31">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Article\article-printview.html.twig\</jms:reference-file>
-        <jms:reference-file line="75">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Article\source-printview.html.twig\</jms:reference-file>
-        <jms:reference-file line="193">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Default\base.html.twig\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3ffb811f9be63cf3e71f2e2b71599ba2b7721405" resname="About us">
-        <source>About us</source>
-        <target>Über uns</target>
-        <jms:reference-file line="39">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Person\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="ecfe29ef8fcfc7c6552fb9793fd0884a7b9c0a8b" resname="Additional Information">
         <source>Additional Information</source>
@@ -43,11 +31,6 @@
         <source>Authors</source>
         <target>Autorinnen und Autoren</target>
         <jms:reference-file line="49">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\PersonController.php\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ba9493b694886a3a73c7e13a3911d6056a440140" resname="Become an Author">
-        <source>Become an Author</source>
-        <target>Autor_in werden</target>
-        <jms:reference-file line="52">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Person\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="619d65e1ae1a2704aa306451ac2a75a0cde345a8" resname="Bibliography">
         <source>Bibliography</source>
@@ -74,12 +57,7 @@
       <trans-unit id="501d8e4cff50a66866de111c38d237b508f2a0a7" resname="Click to return to the top of the page">
         <source>Click to return to the top of the page</source>
         <target>Klicken Sie, um an den Beginn der Seite zurückzukehren</target>
-        <jms:reference-file line="253">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Default\base.html.twig\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="84f4b34f4610e466ebebcb130432b363ccb9832c" resname="Contact inquiry">
-        <source>Contact inquiry</source>
-        <target>Kontaktanfrage</target>
-        <jms:reference-file line="28">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
+        <jms:reference-file line="57">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Default\base.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="4f9be057f0ea5d2ba72fd2c810e8d7b9aa98b469" resname="Content">
         <source>Content</source>
@@ -152,13 +130,8 @@
       </trans-unit>
       <trans-unit id="3a2cbbebe01f6328ceaef9f8f3b22c4b706cd6c6" resname="English Translation">
         <source>English Translation</source>
-        <target state="new">Englische Übersetzung</target>
+        <target>Englische Übersetzung</target>
         <jms:reference-file line="281">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\SourceController.php\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="86f408b7a2000db4a009c15b491b2be5fd76498f" resname="Error Report">
-        <source>Error Report</source>
-        <target>Fehlermeldung</target>
-        <jms:reference-file line="26">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="5678489184de27a0fbf7bf33023aded4af57df35" resname="Exit Fullscreen Mode">
         <source>Exit Fullscreen Mode</source>
@@ -188,7 +161,7 @@
       </trans-unit>
       <trans-unit id="53d41972e41444e968abc7651e02d6123d4837b9" resname="German Translation">
         <source>German Translation</source>
-        <target state="new">Deutsche Übersetzung</target>
+        <target>Deutsche Übersetzung</target>
         <jms:reference-file line="284">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\SourceController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7427cf697be16a4ec1d916910128a59d920125e7" resname="Glossary">
@@ -232,16 +205,10 @@
         <target>ISBN</target>
         <jms:reference-file line="42">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Bibliography\detail.html.twig\</jms:reference-file>
       </trans-unit>
-      <trans-unit id="06a5958742289ee7a183aaa487052288095e08e7" resname="Improvement">
-        <source>Improvement</source>
-        <target>Verbesserungsvorschlag</target>
-        <jms:reference-file line="27">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
-      </trans-unit>
       <trans-unit id="97c20e9ee98b40e4c76b73b7186c7fe341baf247" resname="Institute for the History of the German Jews">
         <source>Institute for the History of the German Jews</source>
         <target>Institut für die Geschichte der deutschen Juden</target>
         <jms:reference-file line="305">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Command\ArticleDoiCommand.php\</jms:reference-file>
-        <jms:reference-file line="186">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Default\base.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2312ce905355db60ba0a4da09a398ae54ecc79fd" resname="Integrated Authority File">
         <source>Integrated Authority File</source>
@@ -254,7 +221,7 @@
       <trans-unit id="15470fd033e12b800743519c6e594f7da0f4f0f0" resname="Interpretation">
         <source>Interpretation</source>
         <target>Interpretation</target>
-        <jms:reference-file line="79">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\RenderTeiController.php\</jms:reference-file>
+        <jms:reference-file line="83">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\RenderTeiController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b04ba49f848624bb97ab094a2631d2ad74913498" resname="Loading...">
         <source>Loading...</source>
@@ -301,7 +268,7 @@
       <trans-unit id="0d901765ee6394eef3f5f95820bee5486f496425" resname="No persons could be found">
         <source>No persons could be found</source>
         <target>Es wurden keine Personen gefunden</target>
-        <jms:reference-file line="31">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Person\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="26">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Person\index-listing.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="dba7be1a6609144c0da07d60483923d76f9e9915" resname="No places could be found">
         <source>No places could be found</source>
@@ -318,11 +285,6 @@
         <target>Organisationen</target>
         <jms:reference-file line="46">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\OrganizationController.php\</jms:reference-file>
         <jms:reference-file line="4">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Organization\index.html.twig\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a148f31c43866b7ddc2dfc3ac44b688b407189c2" resname="Other Reason">
-        <source>Other Reason</source>
-        <target>Anderer Grund</target>
-        <jms:reference-file line="29">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f3cf96e919766ef2354bbbddd56e9cbb5f2792e8" resname="Persons">
         <source>Persons</source>
@@ -394,7 +356,7 @@
         <source>Search</source>
         <target>Suche</target>
         <jms:reference-file line="187">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\SearchController.php\</jms:reference-file>
-        <jms:reference-file line="202">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Default\base.html.twig\</jms:reference-file>
+        <jms:reference-file line="36">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Default\header.html.twig\</jms:reference-file>
         <jms:reference-file line="6">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Search\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="e75fa612b3435df4dfe963f813cb8a876de9d113" resname="Search in KVK">
@@ -407,11 +369,6 @@
         <target>Rubrik</target>
         <jms:reference-file line="41">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Search\index.html.twig\</jms:reference-file>
         <jms:reference-file line="52">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Search\index.html.twig\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9bc2575c3930437e80555f78757b783c842e8e66" resname="Send">
-        <source>Send</source>
-        <target>Abschicken</target>
-        <jms:reference-file line="38">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="1a0d4b514b3e6b95da4aecd1f0f57821eec4ff33" resname="Show Map">
         <source>Show Map</source>
@@ -444,7 +401,7 @@
       <trans-unit id="6da13addb000b67d42a6d66391713819e634149f" resname="Source">
         <source>Source</source>
         <target>Quelle</target>
-        <jms:reference-file line="85">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\RenderTeiController.php\</jms:reference-file>
+        <jms:reference-file line="89">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\RenderTeiController.php\</jms:reference-file>
         <jms:reference-file line="64">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Article\article.html.twig\</jms:reference-file>
         <jms:reference-file line="412">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
@@ -470,11 +427,6 @@
         <target>Quellen nach primärem Ort</target>
         <jms:reference-file line="12">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Place\map.html.twig\</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8d183dbdcea3b29906090bd83fa6fa37923cc8ec" resname="Subject">
-        <source>Subject</source>
-        <target>Thema der Anfrage</target>
-        <jms:reference-file line="24">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
-      </trans-unit>
       <trans-unit id="10091b68468ef05728f66f2eadc72aadbba2b75d" resname="Subscribe to new Articles (RSS)">
         <source>Subscribe to new Articles (RSS)</source>
         <target>Neue Beiträge abonnieren (RSS)</target>
@@ -488,7 +440,7 @@
       <trans-unit id="7e13bd176f89a12f0b614b55ffc19c14515ef920" resname="Topic">
         <source>Topic</source>
         <target>Thema</target>
-        <jms:reference-file line="73">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\RenderTeiController.php\</jms:reference-file>
+        <jms:reference-file line="77">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\RenderTeiController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="07e4f9c27860c8f452d481954e498a807cd27a98" resname="Topics">
         <source>Topics</source>
@@ -497,12 +449,12 @@
       </trans-unit>
       <trans-unit id="7792b396c165940a2ef3372031f6dbb64b71233e" resname="Transcription">
         <source>Transcription</source>
-        <target state="new">Transkript</target>
+        <target>Transkript</target>
         <jms:reference-file line="239">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\SourceController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0a1eaf7bab30b94accdfa5072f6fe287078e78c9" resname="Transcription (Latin script)">
         <source>Transcription (Latin script)</source>
-        <target state="new">Transkript (lateinische Schrift)</target>
+        <target>Transkript (lateinische Schrift)</target>
         <jms:reference-file line="241">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Controller\SourceController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0e2d9b0777a485c1276de0803c12a7d76fbc5c39" resname="URL">
@@ -516,16 +468,6 @@
         <source>View Fullscreen</source>
         <target>Im Vollbildmodus anzeigen</target>
         <jms:reference-file line="44">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="eb651d18d1992f7df7bfec5cc8f74e023d4925e6" resname="Your E-Mail">
-        <source>Your E-Mail</source>
-        <target>Ihre E-Mail</target>
-        <jms:reference-file line="21">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8ae188c575e6008af81661c4ed89a26b742c0efa" resname="Your Message">
-        <source>Your Message</source>
-        <target>Ihre Nachricht</target>
-        <jms:reference-file line="35">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="73fa4b1e312d2a9d4404187713838530a6439ba3" resname="as of">
         <source>as of</source>
