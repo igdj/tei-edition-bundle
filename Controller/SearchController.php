@@ -240,6 +240,7 @@ extends BaseController
             switch ($parts[0]) {
                 case 'sourcearticle':
                 case 'article':
+                case 'exhibitionarticle':
                     $articleIds[] = intval($parts[1]);
                     $route = 'article';
                     $routeParams = [ 'id' => intval($parts[1]) ];
@@ -306,6 +307,14 @@ extends BaseController
                     case 'source':
                         $route = 'source';
                         $routeParams = [ 'uid' => $article['uid'] ];
+                        break;
+
+                    case 'exhibition':
+                        $route = 'exhibition';
+                        $routeParams = [
+                            'slug' => !empty($article['slug'])
+                                ? $article['slug'] : $article['uid'],
+                        ];
                         break;
 
                     default:

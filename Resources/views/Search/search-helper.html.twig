@@ -1,8 +1,8 @@
 {% macro display_result(result) %}
     {% import _self as searchHelper %}
-    {% if result.entity_s == 'article' %}
+    {% if result.entity_s is defined and result.entity_s == 'article' %}
         {{ searchHelper.display_article_result(result) }}
-    {% elseif result.entity_s == 'bibitem' %}
+    {% elseif result.entity_s is defined and result.entity_s == 'bibitem' %}
         {{ searchHelper.display_bibitem_result(result) }}
     {% else %}
         {{ searchHelper.display_other_result(result) }}

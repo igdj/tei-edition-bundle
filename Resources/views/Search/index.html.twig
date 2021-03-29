@@ -6,7 +6,7 @@
     <h1>{{ 'Search'| trans }}</h1>
         <form action="{{ path('search-index') }}" method="post" style="margin-bottom: 0.5em">
             <div class="input-group">
-                <input id="search-box" name="q" value="{{ meta.query }}" class="form-control" style="outline:none;" />
+                <input id="search-box" name="q" value="{% if meta is not empty %}{{ meta.query }}{% endif %}" class="form-control" style="outline:none;" />
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-outline" >
                     <i class="glyphicon glyphicon-search"></i>
