@@ -977,12 +977,14 @@ extends \Sabre\Xml\Reader
                 $isDTACorpusPublisher = !empty($attributes['corresp'])
                     && $attributes['corresp'] == '#DTACorpusPublisher';
 
-                if (!$isDTACorpusPublisher) {
+                if ($isDTACorpusPublisher) {
+                    // ignore
+                    $reader->next();
+                }
+                else {
+                    // continue with innerTree
                     // must come before $reader->readText() below
-                    $children = $reader->parseInnerTree();
-                    foreach ($children as $child) {
-                        $reader->collect($child);
-                    }
+                    $reader->parseInnerTree();
                 }
                 break;
 
@@ -994,8 +996,9 @@ extends \Sabre\Xml\Reader
                 ];
 
                 $reader->collect($res);
-        }
 
-        $reader->next();
+                // continue
+                $reader->next();
+        }
     }
 }
