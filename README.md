@@ -2,9 +2,11 @@ TeiEditionBundle
 ================
 
 This is the initial code for factoring out the generic parts of
-the Key Documents of German-Jewish History into a Symfony bundle
+the Key Documents of German-Jewish History into a Symfony bundle.
 
-You may use it in parts or adjust it to your own need if it fits your needs.
+See https://github.com/igdj/demo-edition for step-by-step instructions
+on how to make use of this bundle in your project.
+
 If you have any questions or find this code helpful, please contact us at
     http://jewish-history-online.net/contact
 
