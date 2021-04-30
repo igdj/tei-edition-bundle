@@ -48,7 +48,9 @@
 
         "sabre/xml": "^2.2",
         "servo/fluidxml": "^1.21",
+        "fluentdom/fluentdom": "^8.0",
         "brunty/relax-ng-domdocument": "~0.2",
+
         "html2text/html2text": "^4.3",
 
         "igdj/lod-service": "@dev",
