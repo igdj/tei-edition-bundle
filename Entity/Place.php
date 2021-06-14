@@ -63,6 +63,7 @@ extends PlaceBase
         'former primary political entities' => 'former primary political entity',    // http://vocab.getty.edu/aat/300387356
         'former administrative divisions' => 'former administrative division',    // http://vocab.getty.edu/aat/300387179
         'states (political divisions)' => 'state',  // http://vocab.getty.edu/aat/300000776
+        'departments (political divisions)' => 'department',  // http://vocab.getty.edu/aat/300000772
         'first level subdivisions (political entities)' => 'province',  // http://vocab.getty.edu/aat/300387064
         'third level subdivisions (political entities)' => 'district',  // http://vocab.getty.edu/aat/300387064
         'cantons (administrative bodies)' => 'canton', // http://vocab.getty.edu/aat/300000769
