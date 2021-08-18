@@ -66,6 +66,7 @@ extends BaseCommand
             return 1;
         }
 
+        /* TODO: Move from simplexml to FluentDOM */
         libxml_use_internal_errors(true);
         $xml = @simplexml_load_file($fname);
 
