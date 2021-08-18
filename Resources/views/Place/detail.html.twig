@@ -13,10 +13,10 @@
     <div class="smaller">
         {% for child in path %}
         <a href="{% if child.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : child.tgn }) }}{% else %}{{ path('place', { 'id' : child.id }) }}{% endif %}">
-        {{ child.nameLocalized(app.request.locale) }}
+            {{ child.nameLocalized(app.request.locale) }}
         </a>
-        {% if not loop.last %} &gt; {% endif %}
-    {% endfor %}
+            {% if not loop.last %} &gt; {% endif %}
+        {% endfor %}
     </div>
     {% endif %}
     <h1>
