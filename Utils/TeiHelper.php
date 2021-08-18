@@ -80,7 +80,7 @@ class TeiHelper
      * @param string $fname
      * @return \FluentDOM\DOM\Document|false
      */
-    protected function loadXml(string $fname)
+    public function loadXml(string $fname)
     {
         try {
             $dom = \FluentDOM::load($fname, 'xml', [
