@@ -17,7 +17,10 @@ use TeiEditionBundle\Utils\ImageMagick\ImageMagickProcessor;
 class SourceController
 extends ArticleController
 {
-    static function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false)
+    /**
+     * UTF-8 safe wordwrap
+     */
+    private static function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false)
     {
         $lines = explode($break, $str);
 
@@ -57,6 +60,9 @@ extends ArticleController
         return implode($break, $lines);
     }
 
+    /**
+     * Render source into a printable HTML-version
+     */
     protected function renderSourcePdf($parts)
     {
         $sourceArticle = $parts['article'];
@@ -80,6 +86,9 @@ extends ArticleController
         $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
     }
 
+    /**
+     * Generate JsonLdRespone
+     */
     protected function buildJsonLdResponse(Request $request, TranslatorInterface $translator, SourceArticle $sourceArticle)
     {
         $jsonLd = $sourceArticle->jsonLdSerialize($request->getLocale());
@@ -95,6 +104,11 @@ extends ArticleController
         return new JsonLdResponse($jsonLd);
     }
 
+    /**
+     * Render the Source Viewer which depends on the format (JsonLD or HTML),
+     * the mode (PDF or Browser-view)
+     * as well as the sourceType (text / Transcript / Audio / Video / Object)
+     */
     protected function renderSourceViewer(Request $request, TranslatorInterface $translator, $uid, SourceArticle $sourceArticle)
     {
         if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
@@ -433,6 +447,9 @@ EOT;
         return $this->renderSourceViewer($request, $translator, $uid, $sourceArticle);
     }
 
+    /**
+     * The folder uses leading zeroes (e.g. source-00123)
+     */
     protected function buildFolderName($uid)
     {
         if (!preg_match('/(source)\-(\d+)/', $uid, $matches)) {
@@ -442,6 +459,10 @@ EOT;
         return sprintf('%s-%05d', $matches[1], $matches[2]);
     }
 
+    /**
+     * Render a README.txt with proper Meta-Data which
+     * is packed into the ZIP-Folder for download
+     */
     protected function renderReadme($translator, $uid)
     {
         $fs = new \Symfony\Component\Filesystem\Filesystem();
@@ -458,8 +479,9 @@ EOT;
             $locale = \TeiEditionBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
             if (in_array($locale, $this->getParameter('locales'))) {
                 $translator->setLocale($locale);
-                $content = $this->renderView('@TeiEdition/Article/readme-' . $locale . '.txt.twig',
-                                             [ 'meta' => $sourceArticle ]);
+                $content = $this->renderView('@TeiEdition/Article/readme-' . $locale . '.txt.twig', [
+                    'meta' => $sourceArticle,
+                ]);
                 $tempnam = $fs->tempnam(sys_get_temp_dir(), 'readme-' . $locale);
                 file_put_contents($tempnam,
                                   str_replace("\n", "\r\n", self::mb_wordwrap($content)));
@@ -486,6 +508,9 @@ EOT;
         }
     }
 
+    /**
+     * Build a list of files which will be added to the ZIP-Download
+     */
     protected function buildDownloadFiles($uid, $sourceArticle)
     {
         $dir = $this->buildFolderName($uid);
@@ -530,6 +555,9 @@ EOT;
         return $files;
     }
 
+    /**
+     * Lookup the web-accessible path which contains METS-container and tiles
+     */
     protected function buildViewerPath($uid)
     {
         $dir = $this->buildFolderName($uid);
@@ -548,6 +576,9 @@ EOT;
         return [ $relPath, $filePath ];
     }
 
+    /**
+     * Generate ZIP-File for download
+     */
     protected function generateZip($imagickProcessor, $uid, $files)
     {
         $dstPath = $this->buildViewerPath($uid);
@@ -617,6 +648,9 @@ EOT;
         return $urlZip;
     }
 
+    /**
+     * Use ORM to lookup the entity by uid in the proper locale
+     */
     protected function findSourceArticle($uid, $locale)
     {
         $criteria = [ 'uid' => $uid ];
@@ -631,6 +665,8 @@ EOT;
 
     /**
      * @Route("/source/{uid}.zip", name="source-download")
+     *
+     * For downloadable sources, build the ZIP-archive and redirect to it
      */
     public function downloadAction(Request $request,
                                    TranslatorInterface $translator,
@@ -687,7 +723,8 @@ EOT;
         if ($article->licenseAllowsDownload()) {
             $fname = $this->buildArticleFname($article);
             $fnameFull = $this->locateTeiResource($fname);
-            return new \Symfony\Component\HttpFoundation\Response(file_get_contents($fnameFull) , 200, [
+
+            return new Response(file_get_contents($fnameFull) , 200, [
                 'Content-Type' => 'text/xml;charset=UTF-8'
             ]);
         }
@@ -787,7 +824,7 @@ EOT;
             $amdSec->appendChild($fragment);
         }
 
-        return new \Symfony\Component\HttpFoundation\Response($resource->saveXML() , 200, [
+        return new Response($resource->saveXML() , 200, [
             'Content-Type' => 'text/xml;charset=UTF-8'
         ]);
     }
@@ -853,8 +890,9 @@ EOT;
                     // (re-)generate
                     $pagesDirUri = 'file:///' . str_replace('\\', '/', $pagesDir);
                     // we have to split the source file to pages
-                    $res = $this->renderTei($fname, 'split-pages.xsl',
-                                            [ 'params' => [ 'outdir' => $pagesDirUri ] ]);
+                    $res = $this->renderTei($fname, 'split-pages.xsl', [
+                        'params' => [ 'outdir' => $pagesDirUri ],
+                    ]);
                 }
 
                 $params = [
@@ -896,8 +934,6 @@ EOT;
             $fnameFull = $this->locateData($srcPath . '/' . $fname);
         }
         catch (\InvalidArgumentException $e) {
-            var_dump($e);
-            exit;
             throw $this->createNotFoundException('This source-image does not exist');
         }
 
