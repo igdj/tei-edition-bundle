@@ -40,6 +40,9 @@ extends RenderTeiController
         }
     }
 
+    /**
+     * Call dtabf_note.xsl to render Source Description
+     */
     protected function renderSourceDescription($article, $translator)
     {
         // localize labels in xslt
@@ -65,6 +68,10 @@ extends RenderTeiController
         return $this->adjustRefs($html, $refs, $translator, $language);
     }
 
+    /**
+     * Call 'dtabf_article.xsl' or 'dtabf_article-printview.xsl'
+     * to render article
+     */
     protected function renderArticle(Request $request,
                                      TranslatorInterface $translator,
                                      $article)
@@ -91,7 +98,6 @@ extends RenderTeiController
         if (preg_match('/\-(\d+)$/', $path, $matches)) {
             $path = preg_replace('/\-(\d+)$/', sprintf('-%05d', $matches[1]), $path);
         }
-
 
         $html = $this->renderTei($fname,
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',

@@ -29,6 +29,9 @@ extends BaseController
     protected $xsltProcessor;
     protected $pdfGenerator;
 
+    /**
+     * Inject XsltProcessor and PdfGenerator
+     */
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
                                 SettableThemeContext $themeContext,
@@ -41,6 +44,9 @@ extends BaseController
         $this->pdfGenerator = $pdfGenerator;
     }
 
+    /**
+     * lookup internal links
+     */
     protected function buildRefLookup($refs, TranslatorInterface $translator, $language)
     {
         $refMap = [];
@@ -118,6 +124,9 @@ extends BaseController
         return $refMap;
     }
 
+    /**
+     * lookup marked-up entities
+     */
     protected function buildEntityLookup($entities)
     {
         $entitiesByType = [
@@ -359,6 +368,9 @@ extends BaseController
         return $entitiesByType;
     }
 
+    /**
+     * lookup marked-up glossary terms
+     */
     protected function buildGlossaryLookup($glossaryTerms, $locale)
     {
         $glossaryLookup = [];
@@ -409,6 +421,9 @@ extends BaseController
         return $glossaryLookup;
     }
 
+    /**
+     * prepend $baseUrl to relative media-src
+     */
     protected function adjustMedia($html, $baseUrl, $imgClass = 'image-responsive')
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
@@ -457,6 +472,9 @@ extends BaseController
         return preg_replace('/<\/?body>/', '', $crawler->html());
     }
 
+    /**
+     * Use PdfGenerator to transform HTML into PDF
+     */
     protected function renderPdf($html, $filename = '', $dest = 'I')
     {
         /*
@@ -474,6 +492,9 @@ extends BaseController
         $this->pdfGenerator->Output($filename, 'I');
     }
 
+    /**
+     * Adjust internal links
+     */
     protected function adjustRefs($html, $refs, $translator, $language)
     {
         if (empty($refs)) {
@@ -514,7 +535,7 @@ extends BaseController
     }
 
     /**
-     * Custom method since $node->text() returns note-content as well
+     * Custom method since $node->text() returns node-content as well
      */
     private function extractText($node)
     {
@@ -528,6 +549,9 @@ extends BaseController
                                           true);
     }
 
+    /**
+     * Use DomCrawler to extract specific parts from the HTML-representation
+     */
     protected function extractPartsFromHtml(string $html, TranslatorInterface $translator)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
