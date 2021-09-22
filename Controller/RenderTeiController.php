@@ -153,20 +153,20 @@ extends BaseController
                 case 'person':
                     $personGnds = $personDjhs = $personStolpersteine = [];
                     foreach ($uriCount as $uri => $count) {
-                        if (preg_match('/^'
-                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                        if (preg_match('/^https?'
+                                       . preg_quote('://d-nb.info/gnd/', '/')
                                        . '(\d+[xX]?)$/', $uri, $matches))
                         {
                             $personGnds[$matches[1]] = $uri;
                         }
-                        else if (preg_match('/^'
-                                    . preg_quote('http://www.dasjuedischehamburg.de/inhalt/', '/')
+                        else if (preg_match('/^https?'
+                                    . preg_quote('://www.dasjuedischehamburg.de/inhalt/', '/')
                                     . '(.+)$/', $uri, $matches))
                         {
                             $personDjhs[urldecode($matches[1])] = $uri;
                         }
-                        else if (preg_match('/^'
-                                            . preg_quote('http://www.stolpersteine-hamburg.de/', '/')
+                        else if (preg_match('/^https?'
+                                            . preg_quote('://www.stolpersteine-hamburg.de/', '/')
                                             . '.*?BIO_ID=(\d+)/', $uri, $matches))
                         {
                             $personStolpersteine[$matches[1]] = $uri;
