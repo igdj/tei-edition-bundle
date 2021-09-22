@@ -157,7 +157,7 @@
                                 <a href="http://www.stolpersteine-hamburg.de//?MAIN_ID=7&BIO_ID={{ person.stolpersteine }}" target="_blank">Stolpersteine Hamburg</a>
                             </li>
                             {% endif %}
-                            {% if person.additional.beacon is not empty %}
+                            {% if person.additional.beacon is defined and person.additional.beacon is not empty %}
                                 {% for info in person.additional.beacon %}
                             <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
                                 {% endfor %}
