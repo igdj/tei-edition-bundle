@@ -897,8 +897,9 @@ class TeiHelper
 
         $additional = [];
         try {
-            $reader->xml($input);
+            $reader->XML($input);
             $output = $reader->parse();
+
             foreach ($output as $entity) {
                 $attribute = '{http://www.tei-c.org/ns/1.0}date' == $entity['name']
                     ? 'corresp' : 'ref';
@@ -1015,7 +1016,7 @@ class TeiHelper
 
         $items = [];
         try {
-            $reader->xml($input);
+            $reader->XML($input);
             $output = $reader->parse();
             foreach ($output as $item) {
                 if (empty($item['attributes']['corresp'])) {
@@ -1075,25 +1076,15 @@ class TeiHelper
     }
 }
 
-class CollectingReader
+/**
+ * We need two different implementations due to changed
+ * method signature in PHP 8
+ * All shared code is in the abstract imtermediary class
+ */
+abstract class CollectingReaderShared
 extends \Sabre\Xml\Reader
 {
     protected $collected;
-
-    function xml($source, $encoding = null, $options = 0)
-    {
-        // hack for <?xml-model href="http://www.deutschestextarchiv.de/basisformat_ohne_header.rng"
-        // type="application/xml"
-        // schematypens="http://relaxng.org/ns/structure/1.0"?\>
-        $source = preg_replace('/<\?xml\-model [\s\S\n]*?\?>/', '', $source);
-
-        parent::xml($source, $encoding, $options);
-    }
-
-    function collect($output)
-    {
-        $this->collected[] = $output;
-    }
 
     function parse() : array
     {
@@ -1101,6 +1092,11 @@ extends \Sabre\Xml\Reader
         parent::parse();
 
         return $this->collected;
+    }
+
+    function collect($output)
+    {
+        $this->collected[] = $output;
     }
 
     static function collectElement(CollectingReader $reader)
@@ -1137,6 +1133,43 @@ extends \Sabre\Xml\Reader
 
                 // continue
                 $reader->next();
+        }
+    }
+}
+
+if (\PHP_VERSION_ID >= 80000) {
+    class CollectingReader extends CollectingReaderShared
+    {
+        /**
+         * In PHP 8 this method is now static,
+         * but can still be called on an XMLReader instance.
+         * https://www.php.net/manual/en/xmlreader.xml.php
+         */
+        public static function XML($source, $encoding = null, $options = 0)
+        {
+            // hack for <?xml-model href="http://www.deutschestextarchiv.de/basisformat_ohne_header.rng"
+            // type="application/xml"
+            // schematypens="http://relaxng.org/ns/structure/1.0"?\>
+            $source = preg_replace('/<\?xml\-model [\s\S\n]*?\?>/', '', $source);
+
+            parent::XML($source, $encoding, $options);
+        }
+    }
+}
+else {
+    class CollectingReader extends CollectingReaderShared
+    {
+        /**
+         * Non-static signature before PHP 8
+         */
+        public function XML($source, $encoding = null, $options = 0)
+        {
+            // hack for <?xml-model href="http://www.deutschestextarchiv.de/basisformat_ohne_header.rng"
+            // type="application/xml"
+            // schematypens="http://relaxng.org/ns/structure/1.0"?\>
+            $source = preg_replace('/<\?xml\-model [\s\S\n]*?\?>/', '', $source);
+
+            parent::XML($source, $encoding, $options);
         }
     }
 }
