@@ -26,8 +26,6 @@ extends AbstractController
                                    RouterInterface $router,
                                    \Twig\Environment $twig)
     {
-        $laminasRequest = $this->buildRequest();
-
         // repositoryName is localized siteName
         $globals = $twig->getGlobals();
 
@@ -35,26 +33,28 @@ extends AbstractController
         $repository = new Repository(
             $request,
             $router,
-            $this->getDoctrine(),
-            [
+            $this->getDoctrine(), [
                 'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName'], [], 'additional'),
                 'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
-            ]);
+        ]);
 
         // Instead of
         //   $provider = new \Picturae\OaiPmh\Provider($repository, $laminasRequest);
         // we use a derived class referencing oai.xsl
-        $provider = new OaiProvider($repository, $laminasRequest);
-
-        $psrResponse = $provider->getResponse();
+        $provider = new OaiProvider($repository, $this->buildRequest());
 
         // use HttpFoundationFactory to convert $psrResponse
         $httpFoundationFactory = new HttpFoundationFactory();
 
-        return $httpFoundationFactory->createResponse($psrResponse);
+        return $httpFoundationFactory->createResponse($provider->getResponse());
     }
 
-    private function buildRequest()
+    /**
+     * build Laminas\Diactoros\Request which implements
+     * Psr\Http\Message\RequestInterface
+     * from globals
+     */
+    private function buildRequest(): \Psr\Http\Message\RequestInterface
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ref = & $_POST;
@@ -303,7 +303,7 @@ implements InterfaceRepository
         }
 
         // remove non-null
-        $items = array_filter($items, function($var) { return $var !== null;} );
+        $items = array_filter($items, function($var) { return $var !== null; });
 
         // TODO: handle case when $items is empty but $token is not null
         // which can happen if all are null but there are more to come
@@ -472,7 +472,7 @@ implements InterfaceRepository
 
     protected function buildRecord($uid, $metadataFormat = null)
     {
-        if (!preg_match('/(jgo\:(article|source)\-\d+)\.(de|en)/', $uid, $matches)) {
+        if (!preg_match('/(.*(article|source)\-\d+)\.(de|en)/', $uid, $matches)) {
             return;
         }
 
@@ -501,9 +501,13 @@ implements InterfaceRepository
             $params = [ 'uid' => $article->getUid() ];
             // for sources, creator is free-text
             $creatorParts[] = $article->getCreator();
-            $description = $article->getIsPartOf()->getDescription();
-            if (is_null($datePublished)) {
-                $datePublished = $article->getIsPartOf()->getDatePublished();
+            $parent = $article->getIsPartOf();
+            $description = !is_null($parent)
+                ? $parent->getDescription()
+                : $article->getDescription();
+
+            if (is_null($datePublished) && !is_null($parent)) {
+                $datePublished = $parent->getDatePublished();
             }
         }
         else {
@@ -516,12 +520,14 @@ implements InterfaceRepository
                 $route = 'article';
                 $params = [ 'slug' => $article->getSlug(true) ];
             }
+
             $authors = $article->getAuthor();
             if (count($authors) > 0) {
                 foreach ($authors as $author) {
                     $creatorParts[] = $author->getFullName();
                 }
             }
+
             $description = $article->getDescription();
         }
 
@@ -576,6 +582,8 @@ EOT;
 
     protected function getSomeRecord($metadataFormat, $identifier)
     {
-        return $this->buildRecord($identifier, $metadataFormat);
+        $uid = preg_replace('/^oai\:/', '', $identifier);
+
+        return $this->buildRecord($uid, $metadataFormat);
     }
 }

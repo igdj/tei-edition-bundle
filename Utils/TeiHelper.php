@@ -428,7 +428,7 @@ class TeiHelper
             foreach ($result as $element) {
                 $idno = trim((string)$element);
                 if (!empty($idno)) {
-                    if (preg_match('/^\#?(jgo\:(article|source)-\d+)$/', $idno, $matches)) {
+                    if (preg_match('/^\#?(.*?(article|source)-\d+)$/', $idno, $matches)) {
                         $isPartOf = new \TeiEditionBundle\Entity\Article();
                         $isPartOf->setUid($matches[1]);
                         $article->isPartOf = $isPartOf;
@@ -441,7 +441,7 @@ class TeiHelper
             foreach ($result as $element) {
                 if (!empty($element['corresp'])) {
                     $corresp = (string)$element['corresp'];
-                    if (preg_match('/^\#?(jgo\:(article|source)-\d+)$/', $corresp, $matches)) {
+                    if (preg_match('/^\#?(.*?(article|source)-\d+)$/', $corresp, $matches)) {
                         $isPartOf = new \TeiEditionBundle\Entity\Article();
                         $isPartOf->setUid($matches[1]);
                         $article->isPartOf = $isPartOf;
