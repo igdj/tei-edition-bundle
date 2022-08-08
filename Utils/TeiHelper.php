@@ -599,6 +599,7 @@ class TeiHelper
                             // default namespace
                             $name = $nameParts[1];
                         }
+
                         $self = $parent->appendElement($name, $langName);
                         $self->setAttribute('ident', $langCode3);
 
@@ -646,6 +647,7 @@ class TeiHelper
             }
         }
 
+        // set/remove translator
         if (array_key_exists('translator', $data)) {
             $xpath = 'tei:fileDesc/tei:titleStmt/tei:editor[@role="translator"]';
 
@@ -670,8 +672,9 @@ class TeiHelper
             }
         }
 
+        // update publicationStmt
         if (!empty($data['publisher'])) {
-            // remove
+            // remove unstructured publicationStmt
             \FluentDom($header)->find('./tei:fileDesc/tei:publicationStmt/tei:p[not(*) and not(normalize-space())]')
                 ->remove();
 
@@ -682,6 +685,7 @@ class TeiHelper
                         // default namespace
                         $name = $nameParts[1];
                     }
+
                     $self = $parent->appendElement($name);
                     $this->addChildStructure($self, $data['publisher']);
 
@@ -711,6 +715,7 @@ class TeiHelper
                             // default namespace
                             $name = $nameParts[1];
                         }
+
                         $self = $parent->appendElement($name);
                         $targets = array_keys($data['license']);
                         if (!empty($targets)) {

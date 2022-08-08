@@ -475,7 +475,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     }
 
     /**
-     * Gets author Firstname1 Lastname1, Firstname2 Lastname2
+     * Gets author Firstname1 Lastname1, Firstname2 Lastname2.
      *
      * @return string
      */
