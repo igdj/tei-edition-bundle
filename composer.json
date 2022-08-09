@@ -72,7 +72,7 @@
 
         "mpdf/mpdf": "^8.0",
 
-        "boppy/solr-bundle": "dev-master",
+        "boppy/solr-bundle": "dev-solarium-6",
         "knplabs/knp-paginator-bundle": "^5.3",
 
         "picturae/oai-pmh": "0.5.20",
