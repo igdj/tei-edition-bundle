@@ -58,7 +58,7 @@ trait AlternateNameTrait
      * @var array|null An alias for the item.
      *
      * @ORM\Column(type="json_array", nullable=true)
-     * @Solr\Field(type="strings")
+     * @Solr\Field(type="strings", getter="getAlternateNameValues")
      */
     protected $alternateName;
 
@@ -84,5 +84,15 @@ trait AlternateNameTrait
     public function getAlternateName()
     {
         return self::ensureSortByPreferredLanguages($this->alternateName, self::stripAt($this->name));
+    }
+
+    /**
+     * Gets alternateName.
+     *
+     * @return array
+     */
+    public function getAlternateNameValues()
+    {
+        return array_values($this->getAlternateName());
     }
 }

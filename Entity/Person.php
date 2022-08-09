@@ -91,8 +91,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      *
      * @ORM\Column(type="json_array", nullable=true)
      *
-     * @Solr\Field(type="strings")
-     *
+     * @Solr\Field(type="strings", getter="getDescriptionValues")
      */
     protected $description;
 
@@ -416,6 +415,20 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Gets description.
+     *
+     * TODO: ensure language order as in AlternateNameTrait::ensureSortByPreferredLanguages()
+     *
+     * @return array
+     */
+    public function getDescriptionValues()
+    {
+        return is_null($this->description)
+            ? []
+            : array_values($this->description);
     }
 
     public function getDescriptionLocalized($locale)
