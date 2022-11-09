@@ -8,7 +8,7 @@
         "exclude-from-classmap": [ "/Tests/" ]
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
         "ext-curl": "*",
 
         "symfony/yaml": "^5.4",
