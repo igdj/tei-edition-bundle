@@ -89,7 +89,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     /**
      * @var array|null A short description of the item.
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      *
      * @Solr\Field(type="strings", getter="getDescriptionValues")
      */
@@ -204,12 +204,12 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     protected $viaf;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     protected $entityfacts;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     protected $additional;
 

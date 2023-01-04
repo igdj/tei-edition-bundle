@@ -57,7 +57,7 @@ trait AlternateNameTrait
     /**
      * @var array|null An alias for the item.
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      * @Solr\Field(type="strings", getter="getAlternateNameValues")
      */
     protected $alternateName;

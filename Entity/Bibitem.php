@@ -138,7 +138,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     /**
      * @var array The author/contributor/editor of this CreativeWork.
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     protected $creators;
 
@@ -242,7 +242,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     /**
      * @var array
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     protected $additional;
 
@@ -308,7 +308,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     /**
      * @var array A short description of the item. Generated for solr
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      *
      * @Solr\Field(type="strings")
      *

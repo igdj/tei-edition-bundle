@@ -28,10 +28,10 @@ class Sprintf
      *     %key%            * default
      *
      * @param  String $string String to be formated
-     * @param  Array  $args   Key/value pairs
+     * @param  array  $args   Key/value pairs
      * @return String         Formated string
      */
-    public static function f($string, Array $args)
+    public static function f($string, array $args)
     {
         self::$string = $string;
 

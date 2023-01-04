@@ -61,7 +61,7 @@ implements \JsonSerializable, JsonLdSerializable
     /**
      * @var string A short description of the item.
      *
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     protected $description;
 
@@ -104,7 +104,7 @@ implements \JsonSerializable, JsonLdSerializable
     protected $gnd;
 
     /**
-    * @ORM\Column(type="json_array", nullable=true)
+    * @ORM\Column(type="json", nullable=true)
     */
     protected $additional;
 
