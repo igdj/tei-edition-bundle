@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 use TeiEditionBundle\Entity\SourceArticle;
 use TeiEditionBundle\Utils\ImageMagick\ImageMagickProcessor;
 
@@ -89,13 +91,16 @@ extends ArticleController
     /**
      * Generate JsonLdRespone
      */
-    protected function buildJsonLdResponse(Request $request, TranslatorInterface $translator, SourceArticle $sourceArticle)
+    protected function buildJsonLdResponse(Request $request,
+                                           EntityManagerInterface $entityManager,
+                                           TranslatorInterface $translator,
+                                           SourceArticle $sourceArticle)
     {
         $jsonLd = $sourceArticle->jsonLdSerialize($request->getLocale());
 
         if (empty($jsonLd['thumbnailUrl'])) {
             // use og:image to set this property
-            $og = $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]);
+            $og = $this->buildOg($sourceArticle, $request, $entityManager, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]);
             if (!empty($og['og:image'])) {
                 $jsonLd['thumbnailUrl'] = $og['og:image'];
             }
@@ -109,11 +114,14 @@ extends ArticleController
      * the mode (PDF or Browser-view)
      * as well as the sourceType (text / Transcript / Audio / Video / Object)
      */
-    protected function renderSourceViewer(Request $request, TranslatorInterface $translator, $uid, SourceArticle $sourceArticle)
+    protected function renderSourceViewer(Request $request,
+                                          EntityManagerInterface $entityManager,
+                                          TranslatorInterface $translator,
+                                          $uid, SourceArticle $sourceArticle)
     {
         if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
             // return jsonld-rendition
-            return $this->buildJsonLdResponse($request, $translator, $sourceArticle);
+            return $this->buildJsonLdResponse($request, $entityManager, $translator, $sourceArticle);
         }
 
         $generatePrintView = 'source-pdf' == $request->get('_route');
@@ -136,7 +144,7 @@ extends ArticleController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  $params);
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $entityManager, $translator);
 
         $interpretation = $sourceArticle->getIsPartOf();
         $interpretations = !is_null($interpretation)
@@ -146,7 +154,7 @@ extends ArticleController
         if (isset($interpretation)) {
             $sourceDescription = [
                 'article' => $interpretation,
-                'html' => $this->renderSourceDescription($interpretation, $translator),
+                'html' => $this->renderSourceDescription($interpretation, $entityManager, $translator),
             ];
 
             $relatedCriteria = new \Doctrine\Common\Collections\Criteria();
@@ -155,12 +163,12 @@ extends ArticleController
                 ->andWhere($relatedCriteria->expr()->neq('uid', $sourceArticle->getUid()));
             $relatedCriteria->orderBy([ 'dateCreated' => 'ASC', 'name' => 'ASC' ]);
 
-            $related = $this->getDoctrine()
+            $related = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Article')
                 ->matching($relatedCriteria);
         }
         else {
-            $sourceDescriptionHtml = $this->renderSourceDescription($sourceArticle, $translator);
+            $sourceDescriptionHtml = $this->renderSourceDescription($sourceArticle, $entityManager, $translator);
 
             if (!is_null($sourceDescriptionHtml)) {
                 $sourceDescription = [
@@ -171,14 +179,14 @@ extends ArticleController
         }
 
         if (!is_null($sourceDescription)) {
-            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $translator);
+            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $entityManager, translator);
 
             $entities = array_merge($entities, $entitiesSourceDescription);
             $glossaryTerms += $glossaryTermsSourceDescription;
         }
 
-        $entityLookup = $this->buildEntityLookup($entities);
-        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $request->getLocale());
+        $entityLookup = $this->buildEntityLookup($entityManager, $entities);
+        $glossaryLookup = $this->buildGlossaryLookup($entityManager, $glossaryTerms, $request->getLocale());
 
         $fnameMets = $this->buildArticleFname($sourceArticle, '.mets.xml');
         $parts = explode('.', $fnameMets);
@@ -348,7 +356,7 @@ extends ArticleController
                     'glossary_lookup' => $glossaryLookup,
                     'pageMeta' => [
                         'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
-                        'og' => $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                        'og' => $this->buildOg($sourceArticle, $request, $entityManager, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                         'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                     ],
                 ]);
@@ -392,7 +400,7 @@ EOT;
                 'glossary_lookup' => $glossaryLookup,
                 'pageMeta' => [
                     'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
-                    'og' => $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                    'og' => $this->buildOg($sourceArticle, $request, $entityManager, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                     'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                 ],
             ]);
@@ -415,7 +423,7 @@ EOT;
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
                 'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                'og' => $this->buildOg($sourceArticle, $request, $entityManager, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                 'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
             ],
         ]);
@@ -427,6 +435,7 @@ EOT;
      * @Route("/source/{uid}", name="source", requirements={"uid"=".*source\-\d+"})
      */
     public function sourceViewerAction(Request $request,
+                                       EntityManagerInterface $entityManager,
                                        TranslatorInterface $translator,
                                        $uid)
     {
@@ -436,7 +445,7 @@ EOT;
             $criteria['language'] = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $sourceArticle = $this->getDoctrine()
+        $sourceArticle = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\SourceArticle')
                 ->findOneBy($criteria);
 
@@ -444,7 +453,7 @@ EOT;
             throw $this->createNotFoundException('This source does not exist');
         }
 
-        return $this->renderSourceViewer($request, $translator, $uid, $sourceArticle);
+        return $this->renderSourceViewer($request, $entityManager, $translator, $uid, $sourceArticle);
     }
 
     /**
@@ -463,11 +472,13 @@ EOT;
      * Render a README.txt with proper Meta-Data which
      * is packed into the ZIP-Folder for download
      */
-    protected function renderReadme($translator, $uid)
+    protected function renderReadme(EntityManagerInterface $entityManager,
+                                    TranslatorInterface $translator,
+                                    $uid)
     {
         $fs = new \Symfony\Component\Filesystem\Filesystem();
 
-        $result = $this->getDoctrine()
+        $result = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\SourceArticle')
                 ->findByUid($uid);
 
@@ -651,14 +662,15 @@ EOT;
     /**
      * Use ORM to lookup the entity by uid in the proper locale
      */
-    protected function findSourceArticle($uid, $locale)
+    protected function findSourceArticle(EntityManagerInterface $entityManager,
+                                         $uid, $locale)
     {
         $criteria = [ 'uid' => $uid ];
         if (!empty($locale)) {
             $criteria['language'] = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
         }
 
-        return $this->getDoctrine()
+        return $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\SourceArticle')
                 ->findOneBy($criteria);
     }
@@ -669,11 +681,12 @@ EOT;
      * For downloadable sources, build the ZIP-archive and redirect to it
      */
     public function downloadAction(Request $request,
+                                   EntityManagerInterface $entityManager,
                                    TranslatorInterface $translator,
                                    ImageMagickProcessor $imagickProcessor,
                                    $uid)
     {
-        $article = $this->findSourceArticle($uid, $request->getLocale());
+        $article = $this->findSourceArticle($entityManager, $uid, $request->getLocale());
 
         if (!$article) {
             throw $this->createNotFoundException('This source does not exist');
@@ -691,7 +704,7 @@ EOT;
         }
 
         // generate README.txt / LIESMICH.txt
-        $readme = $this->renderReadme($translator, $uid);
+        $readme = $this->renderReadme($entityManager, $translator, $uid);
         if (false !== $readme) {
             $files = array_merge($files, $readme);
         }
@@ -712,9 +725,11 @@ EOT;
      * For downloadable sources, send TEI
      *
      */
-    public function teiAction(Request $request, $uid)
+    public function teiAction(Request $request,
+                              EntityManagerInterface $entityManager,
+                              $uid)
     {
-        $article = $this->findSourceArticle($uid, $request->getLocale());
+        $article = $this->findSourceArticle($entityManager, $uid, $request->getLocale());
 
         if (!$article) {
             throw $this->createNotFoundException('This source does not exist');
@@ -741,10 +756,11 @@ EOT;
      *
      */
     public function metsAction(Request $request,
+                               EntityManagerInterface $entityManager,
                                \Twig\Environment $twig,
                                $uid)
     {
-        $article = $this->findSourceArticle($uid, $request->getLocale());
+        $article = $this->findSourceArticle($entityManager, $uid, $request->getLocale());
 
         if (!$article) {
             throw $this->createNotFoundException('This source does not exist');

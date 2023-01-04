@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Cocur\Slugify\SlugifyInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use FS\SolrBundle\SolrInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -25,10 +27,11 @@ extends BaseController
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
                                 SettableThemeContext $themeContext,
+                                \Twig\Environment $twig,
                                 SolrInterface $solr,
                                 PaginatorInterface $paginator)
     {
-        parent::__construct($kernel, $slugify, $themeContext);
+        parent::__construct($kernel, $slugify, $themeContext, $twig);
 
         $this->solr = $solr;
         $this->paginator = $paginator;
@@ -159,7 +162,7 @@ extends BaseController
             $meta['facet'] = [];
             foreach ($facetNames as $facetName) {
                 $facet = $resultset->getFacetSet()->getFacet($facetName);
-                if (count($facet) > 1) {
+                if (!is_null($facet) && count($facet) > 1) {
                     $meta['facet'][$facetName] = $facet;
                 }
             }
@@ -195,7 +198,8 @@ extends BaseController
     /**
      * @Route("/search/suggest", name="search-suggest")
      */
-    public function suggestAction(Request $request)
+    public function suggestAction(Request $request,
+                                  EntityManagerInterface $entityManager)
     {
         $suggestions = [];
 
@@ -265,7 +269,7 @@ extends BaseController
         // payload can only hold a single field, so we need to lookup the rest
         $articles = [];
         if (!empty($articleIds)) {
-            $qb = $this->getDoctrine()
+            $qb = $entityManager
                     ->getRepository('\TeiEditionBundle\Entity\Article')
                     ->createQueryBuilder('A')
                     ;

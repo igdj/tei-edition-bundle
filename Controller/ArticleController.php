@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 use Eko\FeedBundle\Feed\FeedManager;
 
 /**
@@ -43,7 +45,9 @@ extends RenderTeiController
     /**
      * Call dtabf_note.xsl to render Source Description
      */
-    protected function renderSourceDescription($article, $translator)
+    protected function renderSourceDescription($article,
+                                               EntityManagerInterface $entityManager,
+                                               TranslatorInterface $translator)
     {
         // localize labels in xslt
         $language = null;
@@ -63,9 +67,9 @@ extends RenderTeiController
             return $html;
         }
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $entityManager, $translator);
 
-        return $this->adjustRefs($html, $refs, $translator, $language);
+        return $this->adjustRefs($html, $refs, $entityManager, $translator, $language);
     }
 
     /**
@@ -73,6 +77,7 @@ extends RenderTeiController
      * to render article
      */
     protected function renderArticle(Request $request,
+                                     EntityManagerInterface $entityManager,
                                      TranslatorInterface $translator,
                                      $article)
     {
@@ -103,15 +108,15 @@ extends RenderTeiController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  [ 'params' => $params ]);
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
-        $html = $this->adjustRefs($html, $refs, $translator, $language);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $entityManager, $translator);
+        $html = $this->adjustRefs($html, $refs, $entityManager, $translator, $language);
 
         $html = $this->adjustMedia($html,
                                    $request->getBaseURL()
                                    . '/viewer/' . $path,
                                    $generatePrintView ? '' : 'img-responsive');
 
-        $sourceDescription = $this->renderSourceDescription($article, $translator);
+        $sourceDescription = $this->renderSourceDescription($article, $entityManager, $translator);
         if ($generatePrintView) {
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
@@ -132,20 +137,20 @@ extends RenderTeiController
             return;
         }
 
-        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $dummy, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription, $translator);
+        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $dummy, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription, $entityManager, $translator);
 
         $entities = array_merge($entities, $entitiesSourceDescription);
 
-        $entityLookup = $this->buildEntityLookup($entities);
-        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $request->getLocale());
+        $entityLookup = $this->buildEntityLookup($entityManager, $entities);
+        $glossaryLookup = $this->buildGlossaryLookup($entityManager, $glossaryTerms, $request->getLocale());
 
-        $related = $this->getDoctrine()
+        $related = $entityManager
             ->getRepository('\TeiEditionBundle\Entity\Article')
             ->findBy([ 'isPartOf' => $article ],
                      [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
 
         $localeSwitch = [];
-        $translations = $this->getDoctrine()
+        $translations = $entityManager
             ->getRepository('\TeiEditionBundle\Entity\Article')
             ->findBy([ 'uid' => $article->getUid() ]);
         foreach ($translations as $translation) {
@@ -175,7 +180,7 @@ extends RenderTeiController
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($article, $request, $translator, 'article', [ 'slug' => $article->getSlug(true) ]),
+                'og' => $this->buildOg($article, $request, $entityManager, $translator, 'article', [ 'slug' => $article->getSlug(true) ]),
                 'twitter' => $this->buildTwitter($article, $request, 'article', [ 'slug' => $article->getSlug(true) ]),
             ],
             'route_params_locale_switch' => $localeSwitch,
@@ -188,6 +193,7 @@ extends RenderTeiController
      * @Route("/article", name="article-index")
      */
     public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator,
                                 FeedManager $feedManager)
     {
@@ -202,8 +208,7 @@ extends RenderTeiController
                 ])
             ? '-A.datePublished' : 'A.creator';
 
-        $qb = $this->getDoctrine()
-                ->getManager()
+        $qb = $entityManager
                 ->createQueryBuilder();
 
         $qb->select([ 'A',
@@ -249,6 +254,7 @@ extends RenderTeiController
      * @Route("/article/{slug}", name="article")
      */
     public function detailAction(Request $request,
+                                 EntityManagerInterface $entityManager,
                                  TranslatorInterface $translator,
                                  $slug)
     {
@@ -265,7 +271,7 @@ extends RenderTeiController
             $criteria['slug'] = $slug;
         }
 
-        $article = $this->getDoctrine()
+        $article = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Article')
                 ->findOneBy($criteria);
 
@@ -273,6 +279,6 @@ extends RenderTeiController
             throw $this->createNotFoundException('This article does not exist');
         }
 
-        return $this->renderArticle($request, $translator, $article);
+        return $this->renderArticle($request, $entityManager, $translator, $article);
     }
 }

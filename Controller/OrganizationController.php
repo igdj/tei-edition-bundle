@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -17,9 +19,10 @@ extends BaseController
      * @Route("/organization", name="organization-index")
      */
     public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator)
     {
-        $organizations = $this->getDoctrine()
+        $organizations = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Organization')
                 ->findBy([ 'status' => [ 0, 1 ] ],
                          [ 'name' => 'ASC' ]);
@@ -54,9 +57,10 @@ extends BaseController
      * Provide a BEACON file as described in
      *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
      */
-    public function gndBeaconAction(TranslatorInterface $translator)
+    public function gndBeaconAction(EntityManagerInterface $entityManager,
+                                    TranslatorInterface $translator)
     {
-        $repo = $this->getDoctrine()
+        $repo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Organization');
 
         $query = $repo
@@ -95,9 +99,11 @@ extends BaseController
      * @Route("/organization/gnd/{gnd}.jsonld", name="organization-by-gnd-jsonld")
      * @Route("/organization/gnd/{gnd}", name="organization-by-gnd")
      */
-    public function detailAction(Request $request, $id = null, $gnd = null)
+    public function detailAction(Request $request,
+                                 EntityManagerInterface $entityManager,
+                                 $id = null, $gnd = null)
     {
-        $organizationRepo = $this->getDoctrine()
+        $organizationRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Organization');
 
         if (!empty($id)) {

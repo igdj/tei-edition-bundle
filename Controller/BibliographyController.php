@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -48,10 +50,10 @@ extends BaseController
      * @Route("/bibliography", name="bibliography-index")
      */
     public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator)
     {
-        $qb = $this->getDoctrine()
-                ->getManager()
+        $qb = $entityManager
                 ->createQueryBuilder();
 
         $qb->select([ 'B', "B.slug HIDDEN nameSort" ])
@@ -72,9 +74,10 @@ extends BaseController
     /**
      * @Route("/bibliography/isbn/beacon", name="bibliography-isbn-beacon")
      */
-    public function isbnBeaconAction(TranslatorInterface $translator)
+    public function isbnBeaconAction(EntityManagerInterface $entityManager,
+                                     TranslatorInterface $translator)
     {
-        $bibitemRepo = $this->getDoctrine()
+        $bibitemRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Bibitem');
 
         $query = $bibitemRepo
@@ -146,10 +149,11 @@ extends BaseController
      * @Route("/bibliography/isbn/{isbn}", name="bibliography-by-isbn")
      */
     public function detailAction(Request $request,
+                                 EntityManagerInterface $entityManager,
                                  TranslatorInterface $translator,
                                  $id = null, $slug = null, $isbn = null)
     {
-        $bibitemRepo = $this->getDoctrine()
+        $bibitemRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Bibitem');
 
         if (!empty($id)) {
@@ -208,7 +212,7 @@ extends BaseController
             'citeProc' => $this->instantiateCiteProc($request->getLocale()),
             'pageMeta' => [
                 'jsonLd' => $bibitem->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($bibitem, $request, $translator, $routeName, $routeParams),
+                'og' => $this->buildOg($bibitem, $request, $entityManager, $translator, $routeName, $routeParams),
                 'twitter' => $this->buildTwitter($bibitem, $request, $routeName, $routeParams,
                                                  [ 'citeProc' => $this->instantiateCiteProc($request->getLocale()) ]),
             ],
@@ -218,7 +222,8 @@ extends BaseController
     /**
      * @Route("/bibliography/unapi", name="bibliography-unapi")
      */
-    public function unapiAction(Request $request)
+    public function unapiAction(Request $request,
+                                EntityManagerInterface $entityManager)
     {
         /* see http://robotlibrarian.billdueber.com/2009/11/setting-up-your-opac-for-zotero-support-using-unapi/ */
         $format = $request->get('format');
@@ -228,7 +233,7 @@ extends BaseController
         if (!empty($id)) {
             if (preg_match('/^urn:bibnum:(.+)$/', $id, $matches)) {
                 $slug = $matches[1];
-                $bibitemRepo = $this->getDoctrine()
+                $bibitemRepo = $entityManager
                         ->getRepository('\TeiEditionBundle\Entity\Bibitem');
                 $bibitem = $bibitemRepo->findOneBySlug($slug);
             }
@@ -241,7 +246,6 @@ extends BaseController
         $formatsAttrs = !empty($id)
             ? sprintf(' id="%s"', htmlspecialchars($id))
             : '';
-
 
         $formats = '<' . '?xml version="1.0" encoding="UTF-8"?>
     <formats' . $formatsAttrs . '>

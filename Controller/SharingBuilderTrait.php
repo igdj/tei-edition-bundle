@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 trait SharingBuilderTrait
 {
     /*
@@ -43,7 +45,11 @@ trait SharingBuilderTrait
      * Debug through https://developers.facebook.com/tools/debug/sharing/
      *
      */
-    public function buildOg($entity, Request $request, TranslatorInterface $translator, $routeName, $routeParams = [])
+    public function buildOg($entity,
+                            Request $request,
+                            EntityManagerInterface $entityManager,
+                            TranslatorInterface $translator,
+                             $routeName, $routeParams = [])
     {
         if (empty($routeParams)) {
             $routeParams = [ 'id' => $entity->getId() ];
@@ -93,7 +99,7 @@ trait SharingBuilderTrait
                         }
                         else {
                             // take the first source
-                            $related = $this->getDoctrine()
+                            $related = $entityManager
                                 ->getRepository('\TeiEditionBundle\Entity\Article')
                                 ->findBy([ 'isPartOf' => $entity ],
                                          [ 'dateCreated' => 'ASC', 'name' => 'ASC'],

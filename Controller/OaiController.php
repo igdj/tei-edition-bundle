@@ -12,6 +12,8 @@ use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Use Picturae OAI-PMH package to implement an OAI-endpoint /oai
  */
@@ -22,6 +24,7 @@ extends AbstractController
      * @Route("/oai", name="oai")
      */
     public function dispatchAction(Request $request,
+                                   EntityManagerInterface $entityManager,
                                    TranslatorInterface $translator,
                                    RouterInterface $router,
                                    \Twig\Environment $twig)
@@ -33,7 +36,7 @@ extends AbstractController
         $repository = new Repository(
             $request,
             $router,
-            $this->getDoctrine(), [
+            $entityManager, [
                 'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName'], [], 'additional'),
                 'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
         ]);
@@ -149,7 +152,7 @@ implements InterfaceRepository
 {
     protected $request;
     protected $router;
-    protected $doctrine;
+    protected $entityManager;
     protected $options = [];
     protected $limit = 20;
 
@@ -158,11 +161,13 @@ implements InterfaceRepository
         return htmlspecialchars(rtrim($str), ENT_XML1, 'utf-8');
     }
 
-    public function __construct($request, $router, $doctrine, $options = [])
+    public function __construct($request, $router,
+                                EntityManagerInterface $entityManager,
+                                $options = [])
     {
         $this->request = $request;
         $this->router = $router;
-        $this->doctrine = $doctrine;
+        $this->entityManager = $entityManager;
         $this->options = $options;
     }
 
@@ -424,8 +429,7 @@ implements InterfaceRepository
             $criteria['articleSection'] = $params['set'];
         }
 
-        $qb = $this->doctrine
-            ->getManager()
+        $qb = $this->entityManager
             ->createQueryBuilder();
 
         $qb->select('A.uid')
@@ -476,8 +480,7 @@ implements InterfaceRepository
             return;
         }
 
-        $article = $this->doctrine
-            ->getManager()
+        $article = $this->entityManager
             ->getRepository('TeiEditionBundle\Entity\Article')
             ->findOneBy([
                 'uid' => $matches[1],
@@ -547,6 +550,7 @@ implements InterfaceRepository
             $date = $datePublished->format('Y-m-d');
         }
         else {
+            $datePublished = new \DateTime('1900-01-01', new \DateTimeZone('UTC'));
             $date = '';
         }
 

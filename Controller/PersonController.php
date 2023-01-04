@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -20,13 +22,13 @@ extends BaseController
      * @Route("/about/authors", name="about-authors")
      */
     public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator)
     {
         $route = $request->get('_route');
         $authorsOnly = 'about-authors' == $route;
 
-        $qb = $this->getDoctrine()
-                ->getManager()
+        $qb = $entityManager
                 ->createQueryBuilder();
 
         $qb->select([
@@ -61,10 +63,11 @@ extends BaseController
      * Provide a BEACON file as described in
      *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
      */
-    public function gndBeaconAction(TranslatorInterface $translator,
+    public function gndBeaconAction(EntityManagerInterface $entityManager,
+                                    TranslatorInterface $translator,
                                     \Twig\Environment $twig)
     {
-        $repo = $this->getDoctrine()
+        $repo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Person');
 
         $query = $repo
@@ -103,10 +106,12 @@ extends BaseController
      * @Route("/person/gnd/{gnd}.jsonld", name="person-by-gnd-jsonld")
      * @Route("/person/gnd/{gnd}", name="person-by-gnd")
      */
-    public function detailAction(Request $request, TranslatorInterface $translator,
+    public function detailAction(Request $request,
+                                 EntityManagerInterface $entityManager,
+                                 TranslatorInterface $translator,
                                  $id = null, $gnd = null)
     {
-        $personRepo = $this->getDoctrine()
+        $personRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Person');
 
         if (!empty($id)) {
@@ -138,7 +143,7 @@ extends BaseController
             'person' => $person,
             'pageMeta' => [
                 'jsonLd' => $person->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($person, $request, $translator, $routeName, $routeParams),
+                'og' => $this->buildOg($person, $request, $entityManager, $translator, $routeName, $routeParams),
                 'twitter' => $this->buildTwitter($person, $request, $routeName, $routeParams),
             ],
         ]);

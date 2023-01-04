@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -23,9 +25,12 @@ extends BaseController
      * @Route("/map/landmark", name="place-map-landmark")
      *
      */
-    public function mapAction(Request $request, TranslatorInterface $translator)
+    public function mapAction(Request $request,
+                              EntityManagerInterface $entityManager,
+                              TranslatorInterface $translator)
     {
-        list($markers, $bounds) = $this->buildMap($request->getLocale(),
+        list($markers, $bounds) = $this->buildMap($entityManager,
+                                                  $request->getLocale(),
                                                   str_replace('place-map-', '', $request->get('_route')));
 
         return $this->render('@TeiEdition/Place/map.html.twig', [
@@ -38,7 +43,9 @@ extends BaseController
     /**
      * @Route("/map/popup-content/{ids}", name="place-map-popup-content")
      */
-    public function mapPopupContentAction(Request $request, $ids)
+    public function mapPopupContentAction(Request $request,
+                                          EntityManagerInterface $entityManager,
+                                          $ids)
     {
         if (empty($ids)) {
             $articles = [];
@@ -47,7 +54,7 @@ extends BaseController
             $mode = str_replace('place-map-', '', $request->get('caller'));
 
             $ids = explode(',', $ids);
-            $qb = $this->getDoctrine()
+            $qb = $entityManager
                     ->getRepository(in_array($mode, [ 'mentioned', 'landmark' ])
                                              ? '\TeiEditionBundle\Entity\Article' : '\TeiEditionBundle\Entity\SourceArticle')
                     ->createQueryBuilder('A')
@@ -111,9 +118,10 @@ extends BaseController
     /**
      * @Route("/place", name="place-index")
      */
-    public function indexAction(TranslatorInterface $translator)
+    public function indexAction(EntityManagerInterface $entityManager,
+                                TranslatorInterface $translator)
     {
-        $places = $this->getDoctrine()
+        $places = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Place')
                 ->findBy([ 'type' => 'inhabited place' ],
                          [ 'name' => 'ASC' ]);
@@ -130,9 +138,11 @@ extends BaseController
      * @Route("/place/tgn/{tgn}.jsonld", name="place-by-tgn-jsonld")
      * @Route("/place/tgn/{tgn}", name="place-by-tgn")
      */
-    public function detailAction(Request $request, $id = null, $tgn = null)
+    public function detailAction(Request $request,
+                                 EntityManagerInterface $entityManager,
+                                 $id = null, $tgn = null)
     {
-        $placeRepo = $this->getDoctrine()
+        $placeRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Place');
 
         if (!empty($id)) {
@@ -156,8 +166,7 @@ extends BaseController
         }
 
         // get the persons associated with this place, currently birthplace / deathplace
-        $qb = $this->getDoctrine()
-                ->getManager()
+        $qb = $entityManager
                 ->createQueryBuilder();
 
         $qb->select([
@@ -190,9 +199,11 @@ extends BaseController
      * @Route("/landmark/{id}.jsonld", name="landmark-jsonld")
      * @Route("/landmark/{id}", name="landmark")
      */
-    public function landmarkDetailAction(Request $request, $id = null)
+    public function landmarkDetailAction(Request $request,
+                                         EntityManagerInterface $entityManager,
+                                         $id = null)
     {
-        $landmarkRepo = $this->getDoctrine()
+        $landmarkRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Landmark');
 
         if (!empty($id)) {

@@ -6,6 +6,8 @@
 
 namespace TeiEditionBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 trait MapHelperTrait
 {
     /**
@@ -55,7 +57,7 @@ trait MapHelperTrait
         return $markers;
     }
 
-    public function buildMap($locale, $mode = '')
+    public function buildMap(EntityManagerInterface $entityManager, $locale, $mode = '')
     {
         switch ($mode) {
             case 'landmark':
@@ -82,7 +84,7 @@ trait MapHelperTrait
                 ];
         }
 
-        $qb = $this->getDoctrine()
+        $qb = $entityManager
                 ->getRepository($entityName)
                 ->createQueryBuilder('A')
                 ;
@@ -90,7 +92,7 @@ trait MapHelperTrait
         $geoPrimary = null;
         if ('mentioned' == $mode) {
             // set $geoPrimary = [ 'geo0' => 1, 'geo1' => 1, ... ] for quick lookup
-            $geo = $this->getDoctrine()
+            $geo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\SourceArticle')
                 ->createQueryBuilder('A')
                 ->select('COALESCE(A.geo,P.geo) AS geo')

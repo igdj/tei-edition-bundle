@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -96,6 +98,7 @@ extends RenderTeiController
      * @Route("/topic", name="topic-index")
      */
     public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator)
     {
         return $this->render('@TeiEdition/Topic/index.html.twig', [
@@ -109,6 +112,7 @@ extends RenderTeiController
      * @Route("/topic/{slug}", name="topic-background")
      */
     public function backgroundAction(Request $request,
+                                     EntityManagerInterface $entityManager,
                                      TranslatorInterface $translator,
                                      $slug)
     {
@@ -128,9 +132,12 @@ extends RenderTeiController
         $fname = $slug . $fnameAppend . '.xml';
         $path = '';
 
-        $criteria = [ 'slug' => $slug, 'language' => \TeiEditionBundle\Utils\Iso639::code1to3($locale) ];
+        $criteria = [
+            'slug' => $slug,
+            'language' => \TeiEditionBundle\Utils\Iso639::code1to3($locale),
+        ];
 
-        $article = $this->getDoctrine()
+        $article = $$entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Article')
                 ->findOneBy($criteria)
                 ;
@@ -160,8 +167,8 @@ extends RenderTeiController
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl', [ 'params' => $params ]);
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
-        $html = $this->adjustRefs($html, $refs, $translator, $language);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $entityManager, $translator);
+        $html = $this->adjustRefs($html, $refs, $entityManager, $translator, $language);
 
         $html = $this->adjustMedia($html,
                                    $request->getBaseURL()
@@ -207,12 +214,11 @@ extends RenderTeiController
             }
         }
 
-        $entityLookup = $this->buildEntityLookup($entities);
-        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $locale);
+        $entityLookup = $this->buildEntityLookup($entityManager, $entities);
+        $glossaryLookup = $this->buildGlossaryLookup($entityManager, $glossaryTerms, $locale);
 
         // sidebar
-        $queryBuilder = $this->getDoctrine()
-                ->getManager()
+        $queryBuilder = $entityManager
                 ->createQueryBuilder()
                 ->select('A, S')
                 ->from('\TeiEditionBundle\Entity\SourceArticle', 'S')
@@ -277,7 +283,7 @@ extends RenderTeiController
             'sources' => [ $sourcesPrimary, $sourcesAdditional ],
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($article, $request, $translator, 'topic-background', [ 'slug' => $slug ]),
+                'og' => $this->buildOg($article, $request, $entityManager, $translator, 'topic-background', [ 'slug' => $slug ]),
                 'twitter' => $this->buildTwitter($article, $request, 'topic-background', [ 'slug' => $slug ]),
             ],
             'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta

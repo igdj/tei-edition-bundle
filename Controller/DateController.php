@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -18,6 +20,7 @@ extends BaseController
      * @Route("/chronology", name="date-chronology")
      */
     public function chronologyAction(Request $request,
+                                     EntityManagerInterface $entityManager,
                                      TranslatorInterface $translator)
     {
         $criteria = [ 'status' => [ 1 ] ];
@@ -27,8 +30,7 @@ extends BaseController
             $criteria['language'] = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $queryBuilder = $this->getDoctrine()
-                ->getManager()
+        $queryBuilder = $entityManager
                 ->createQueryBuilder()
                 ->select('S, A')
                 ->from('\TeiEditionBundle\Entity\SourceArticle', 'S')
@@ -55,10 +57,10 @@ extends BaseController
     /**
      * @Route("/event", name="event-index")
      */
-    public function indexAction(TranslatorInterface $translator)
+    public function indexAction(EntityManagerInterface $entityManager,
+                                TranslatorInterface $translator)
     {
-        $qb = $this->getDoctrine()
-                ->getManager()
+        $qb = $entityManager
                 ->createQueryBuilder();
 
         $qb->select([
@@ -82,9 +84,11 @@ extends BaseController
      * @Route("/event/gnd/{gnd}.jsonld", name="event-by-gnd-jsonld")
      * @Route("/event/gnd/{gnd}", name="event-by-gnd")
      */
-    public function detailAction(Request $request, $id = null, $gnd = null)
+    public function detailAction(Request $request,
+                                 EntityManagerInterface $entityManager,
+                                 $id = null, $gnd = null)
     {
-        $eventRepo = $this->getDoctrine()
+        $eventRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Event');
 
         if (!empty($id)) {
@@ -117,7 +121,7 @@ extends BaseController
             'pageMeta' => [
                 'jsonLd' => $event->jsonLdSerialize($request->getLocale()),
                 /*
-                'og' => $this->buildOg($event, $request, $translator, $routeName, $routeParams),
+                'og' => $this->buildOg($event, $request, $entityManager, $translator, $routeName, $routeParams),
                 'twitter' => $this->buildTwitter($event, $request, $routeName, $routeParams),
                 */
             ],

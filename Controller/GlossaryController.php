@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  *
  */
@@ -17,11 +19,12 @@ extends BaseController
      * @Route("/glossary", name="glossary-index")
      */
     public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator)
     {
         $language = \TeiEditionBundle\Utils\Iso639::code1to3($request->getLocale());
 
-        $terms = $this->getDoctrine()
+        $terms = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\GlossaryTerm')
                 ->findBy([ 'status' => [ 0, 1 ],
                            'language' => $language ],
@@ -35,9 +38,10 @@ extends BaseController
 
     /*
     // currently only index, no detail
-    public function detailAction($slug = null, $gnd = null)
+    public function detailAction(EntityManagerInterface $entityManager,
+                                 $slug = null, $gnd = null)
     {
-        $termRepo = $this->getDoctrine()
+        $termRepo = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\GlossaryTerm');
 
         if (!empty($slug)) {

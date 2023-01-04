@@ -35,10 +35,11 @@ extends BaseController
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
                                 SettableThemeContext $themeContext,
+                                \Twig\Environment $twig,
                                 XsltProcessor $xsltProcessor,
                                 PdfGenerator $pdfGenerator)
     {
-        parent::__construct($kernel, $slugify, $themeContext);
+        parent::__construct($kernel, $slugify, $themeContext, $twig);
 
         $this->xsltProcessor = $xsltProcessor;
         $this->pdfGenerator = $pdfGenerator;
@@ -47,7 +48,9 @@ extends BaseController
     /**
      * lookup internal links
      */
-    protected function buildRefLookup($refs, TranslatorInterface $translator, $language)
+    protected function buildRefLookup($refs,
+                                      EntityManagerInterface $entityManager,
+                                      TranslatorInterface $translator, $language)
     {
         $refMap = [];
 
@@ -61,8 +64,7 @@ extends BaseController
             }, $refs));
 
         // make sure we only pick-up the published ones
-        $query = $this->getDoctrine()
-            ->getManager()
+        $query = $entityManager
             ->createQuery("SELECT a"
                           . " FROM \TeiEditionBundle\Entity\Article a"
                           . " WHERE a.status IN (1)"
@@ -127,7 +129,7 @@ extends BaseController
     /**
      * lookup marked-up entities
      */
-    protected function buildEntityLookup($entities)
+    protected function buildEntityLookup(EntityManagerInterface $entityManager, $entities)
     {
         $entitiesByType = [
             'person' => [],
@@ -174,7 +176,7 @@ extends BaseController
                     }
 
                     if (!empty($personGnds)) {
-                        $persons = $this->getDoctrine()
+                        $persons = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Person')
                             ->findBy([ 'gnd' => array_keys($personGnds) ])
                             ;
@@ -193,7 +195,7 @@ extends BaseController
                     }
 
                     if (!empty($personDjhs)) {
-                        $persons = $this->getDoctrine()
+                        $persons = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Person')
                             ->findBy([ 'djh' => array_keys($personDjhs) ])
                             ;
@@ -212,7 +214,7 @@ extends BaseController
                     }
 
                     if (!empty($personStolpersteine)) {
-                        $persons = $this->getDoctrine()
+                        $persons = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Person')
                             ->findBy([ 'stolpersteine' => array_keys($personStolpersteine) ])
                             ;
@@ -249,7 +251,7 @@ extends BaseController
                     }
 
                     if (!empty($placeTgns)) {
-                        $places = $this->getDoctrine()
+                        $places = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Place')
                             ->findBy([ 'tgn' => array_keys($placeTgns) ])
                             ;
@@ -282,7 +284,7 @@ extends BaseController
                         }
 
                         // override the urls of thse entries that link to a Landmark
-                        $landmarks = $this->getDoctrine()
+                        $landmarks = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Landmark')
                             ->findBy([
                                 'geo' => $geos,
@@ -313,7 +315,7 @@ extends BaseController
                     }
 
                     if (!empty($organizationGnds)) {
-                        $organizations = $this->getDoctrine()
+                        $organizations = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Organization')
                             ->findBy([ 'gnd' => array_keys($organizationGnds) ])
                             ;
@@ -344,7 +346,7 @@ extends BaseController
                     }
 
                     if (!empty($dateGnds)) {
-                        $events = $this->getDoctrine()
+                        $events = $entityManager
                             ->getRepository('\TeiEditionBundle\Entity\Event')
                             ->findBy([ 'gnd' => array_keys($dateGnds) ])
                             ;
@@ -371,7 +373,8 @@ extends BaseController
     /**
      * lookup marked-up glossary terms
      */
-    protected function buildGlossaryLookup($glossaryTerms, $locale)
+    protected function buildGlossaryLookup(EntityManagerInterface $entityManager,
+                                           $glossaryTerms, $locale)
     {
         $glossaryLookup = [];
 
@@ -392,7 +395,7 @@ extends BaseController
         $termsBySlug = [];
 
         // lookup matching terms by slug
-        foreach ($this->getDoctrine()
+        foreach ($entityManager
                 ->getRepository('\TeiEditionBundle\Entity\GlossaryTerm')
                 ->findBy([
                    'status' => [ 0, 1 ],
@@ -495,14 +498,16 @@ extends BaseController
     /**
      * Adjust internal links
      */
-    protected function adjustRefs($html, $refs, $translator, $language)
+    protected function adjustRefs($html, $refs,
+                                  EntityManagerInterface $entityManager,
+                                  TranslatorInterface $translator, $language)
     {
         if (empty($refs)) {
             // nothing to do
             return $html;
         }
 
-        $refLookup = $this->buildRefLookup($refs, $translator, $language);
+        $refLookup = $this->buildRefLookup($refs, $entityManager, $translator, $language);
 
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent('<body>' . $html . '</body>');
@@ -552,7 +557,9 @@ extends BaseController
     /**
      * Use DomCrawler to extract specific parts from the HTML-representation
      */
-    protected function extractPartsFromHtml(string $html, TranslatorInterface $translator)
+    protected function extractPartsFromHtml(string $html,
+                                            EntityManagerInterface $entityManager,
+                                            TranslatorInterface $translator)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent($html);
@@ -613,8 +620,7 @@ extends BaseController
                 $bibitemsMap[$corresp] = \TeiEditionBundle\Entity\Bibitem::slugifyCorresp($this->getSlugify(), $corresp);
             }
 
-            $query = $this->getDoctrine()
-                ->getManager()
+            $query = $entityManager
                 ->createQuery('SELECT b.slug'
                               . ' FROM \TeiEditionBundle\Entity\Bibitem b'
                               . ' WHERE b.slug IN (:slugs) AND b.status >= 0')
@@ -657,8 +663,7 @@ extends BaseController
         }
 
         if (!empty($authorSlugs)) {
-            $query = $this->getDoctrine()
-                ->getManager()
+            $query = $entityManager
                 ->createQuery('SELECT p.slug, p.description, p.gender'
                               . ' FROM \TeiEditionBundle\Entity\Person p'
                               . ' WHERE p.slug IN (:slugs)')

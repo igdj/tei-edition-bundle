@@ -21,15 +21,18 @@ extends AbstractController
     private $kernel;
     private $slugify;
     private $themeContext;
+    private $twig;
     private $globals = null;
 
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
-                                SettableThemeContext $themeContext)
+                                SettableThemeContext $themeContext,
+                                \Twig\Environment $twig)
     {
         $this->kernel = $kernel;
         $this->slugify = $slugify;
         $this->themeContext = $themeContext;
+        $this->twig = $twig;
     }
 
     protected function slugify($string, $options = null)
@@ -42,10 +45,13 @@ extends AbstractController
         return $this->slugify;
     }
 
+    /**
+     * Get a global twig variable by $key
+     */
     protected function getGlobal($key)
     {
         if (is_null($this->globals)) {
-            $this->globals = $this->get('twig')->getGlobals();
+            $this->globals = $this->twig->getGlobals();
         }
 
         return array_key_exists($key, $this->globals)
