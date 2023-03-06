@@ -34,7 +34,7 @@ extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $fname = $input->getArgument('file');
 
@@ -95,14 +95,12 @@ extends BaseCommand
             }
         }
 
-        $baseDir = realpath($this->getProjectDir());
-
-        $targetPath = sprintf('web/viewer/%s', $DERIVATE);
-        if (!is_dir($baseDir . '/' . $targetPath)) {
-            mkdir($baseDir . '/' . $targetPath);
+        $targetPath = sprintf('/viewer/%s', $DERIVATE);
+        if (!is_dir($this->publicDir . $targetPath)) {
+            mkdir($this->publicDir . '/' . $targetPath);
         }
 
-        $targetDir = realpath($baseDir . '/' . $targetPath);
+        $targetDir = $this->publicDir . $targetPath;
         if (empty($targetDir)) {
             $output->writeln(sprintf('<error>%s could not be created</error>', $targetPath));
 

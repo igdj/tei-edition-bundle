@@ -99,7 +99,7 @@ class TeiHelper
 
     /**
      * Go through <pb /> and return first
-     * non empty @facs attribute
+     * non empty facs-attribute
      */
     public function getFirstPbFacs($fname)
     {
@@ -127,7 +127,7 @@ class TeiHelper
 
     /**
      * Go through <figure /> and return first
-     * non empty @facs attribute
+     * non empty facs-attribute
      */
     public function getFirstFigureFacs($fname)
     {
@@ -152,7 +152,7 @@ class TeiHelper
 
     /**
      * Go through <figure /> and return all
-     * non empty @facs attribute
+     * non empty facs-attribute
      */
     public function getFigureFacs($fname)
     {

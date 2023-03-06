@@ -45,13 +45,14 @@ extends BaseCommand
                                 ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
                                 XmlFormatter $formatter,
+                                ?string $publicDir,
                                 SimplifyGeojsonProcessor $simplifier
                                 )
     {
         parent::__construct($em, $kernel, $router, $translator, $slugify, $params,
                             $themeRepository, $themeContext, $siteTheme,
                             $imagickProcessor,
-                            $xsltProcessor, $formatter);
+                            $xsltProcessor, $formatter, $publicDir);
 
         $this->simplifier = $simplifier;
     }
@@ -162,7 +163,7 @@ extends BaseCommand
         $this->em->clear();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $dir = $this->locateData($fname = 'geo/');
 

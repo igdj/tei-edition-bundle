@@ -59,7 +59,8 @@ extends Command
                                 ?string $siteTheme,
                                 ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
-                                XmlFormatter $formatter
+                                XmlFormatter $formatter,
+                                ?string $publicDir
                             )
     {
         parent::__construct();
@@ -82,6 +83,10 @@ extends Command
                 $this->themeContext->setTheme($theme);
             }
         }
+
+        $this->publicDir = is_null($publicDir)
+            ? $this->getProjectDir() . '/web'
+            : $publicDir;
     }
 
     protected function getParameter(string $name)

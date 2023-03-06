@@ -872,13 +872,12 @@ EOT;
             $fname = sprintf('%s-%05d.%s',
                              $matches[1], $matches[2], $locale);
         }
+
         $fname .= '.xml';
 
         // check if source is splitted into individual files one per page
-        $baseDir = realpath($this->getProjectDir());
-
-        $targetPath = sprintf('web/viewer/%s', $uid);
-        $targetDir = realpath($baseDir . '/' . $targetPath);
+        $targetPath = sprintf('/viewer/%s', $uid);
+        $targetDir = $this->getGlobal('public_dir') . $targetPath;
 
         $html = 'TODO: A problem occured';
         if (!empty($targetDir)) {

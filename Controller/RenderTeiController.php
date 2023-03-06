@@ -486,7 +486,7 @@ extends BaseController
         exit;
         */
 
-        $fnameLogo = $this->getProjectDir() . '/web/img/icon/icons_wide.png';
+        $fnameLogo = $this->getGlobal('public_dir') . '/img/icon/icons_wide.png';
         $this->pdfGenerator->imageVars['logo_top'] = file_get_contents($fnameLogo);
 
         // silence due to https://github.com/mpdf/mpdf/issues/302 when using tables

@@ -34,7 +34,7 @@ extends BaseCommand
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $language = 'deu';
         $locale = \TeiEditionBundle\Utils\Iso639::code3to1($language);

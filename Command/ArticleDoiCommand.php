@@ -59,10 +59,14 @@ extends BaseCommand
                                 ?string $siteTheme,
                                 ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
-                                XmlFormatter $formatter
+                                XmlFormatter $formatter,
+                                ?string $publicDir
                             )
     {
-        parent::__construct($em, $kernel, $router, $translator, $slugify, $params, $themeRepository, $themeContext, $siteTheme, $imagickProcessor, $xsltProcessor, $formatter);
+        parent::__construct($em, $kernel, $router, $translator, $slugify, $params,
+                            $themeRepository, $themeContext, $siteTheme,
+                            $imagickProcessor, $xsltProcessor, $formatter,
+                            $publicDir);
 
         $this->prefix = $params->get('app.datacite.prefix');
         $this->baseUrl = $params->get('app.datacite.url');
@@ -95,7 +99,7 @@ extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $fname = $input->getArgument('file');
 

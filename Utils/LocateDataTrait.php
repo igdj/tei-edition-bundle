@@ -19,6 +19,9 @@ trait LocateDataTrait
             // try to locate from theme-data path
             $ret[] = $theme->getPath() . $append;
         }
+        else {
+            $ret[] = $this->getProjectDir() . $append;
+        }
 
         // try to locate from bundle-specific Resources-path
         $ret[] = '@TeiEditionBundle/Resources' . $append;

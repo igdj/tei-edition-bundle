@@ -52,7 +52,7 @@ extends BaseCommand
         return $html2text->getText();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $fname = $input->getArgument('file');
 

@@ -36,7 +36,7 @@ extends BaseCommand
         $xml->registerXPathNamespace('tei', 'http://www.tei-c.org/ns/1.0');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $fname = $input->getArgument('file');
 

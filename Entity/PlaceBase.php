@@ -487,7 +487,7 @@ implements \JsonSerializable, JsonLdSerializable
         return $this->getName();
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize() /* For PHP >= 0 : mixed */
     {
         return [
             'id' => $this->id,
