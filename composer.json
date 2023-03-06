@@ -63,7 +63,7 @@
         "citation-style-language/locales": "@dev",
         "seboettg/citeproc-php": "2.4.1",
         "fale/isbn": "^3.1",
-        "technosophos/LibRIS": "dev-master",
+        "technosophos/libris": "dev-master",
         "geissler/converter": "dev-master",
 
         "nategood/httpful": "*",
