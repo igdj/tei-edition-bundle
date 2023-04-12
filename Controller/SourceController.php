@@ -179,7 +179,7 @@ extends ArticleController
         }
 
         if (!is_null($sourceDescription)) {
-            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $entityManager, translator);
+            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $entityManager, $translator);
 
             $entities = array_merge($entities, $entitiesSourceDescription);
             $glossaryTerms += $glossaryTermsSourceDescription;
