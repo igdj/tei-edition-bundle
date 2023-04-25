@@ -13,7 +13,7 @@
             {% endif %}
             <li>
                 <a href="{% if person.gnd is not empty %}{{ path('person-by-gnd', { 'gnd' : person.gnd }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
-                {{ person.fullname }}
+                {{ person.fullname -}}
                 </a>
 
                 {% if person.birthDate is not empty or person.deathDate is not empty %}
