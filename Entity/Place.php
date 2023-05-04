@@ -47,6 +47,7 @@ extends PlaceBase
         'bays (bodies of water)' => 'bay',          // http://vocab.getty.edu/aat/300132316
         'rivers' => 'river',                        // http://vocab.getty.edu/aat/300008707
         'streams' => 'stream',                      // http://vocab.getty.edu/aat/300008699
+        'channels (water bodies)' => 'channel',     // http://vocab.getty.edu/aat/300008713
         'lakes (bodies of water)' => 'lake',        // http://vocab.getty.edu/aat/300008680
         'mountains' => 'mountain',                  // http://vocab.getty.edu/aat/300008795
         'mountain ranges' => 'mountain range',      // http://vocab.getty.edu/aat/300386831
