@@ -38,7 +38,8 @@ extends AbstractController
             $router,
             $entityManager, [
                 'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName'], [], 'additional'),
-                'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
+                'administrationEmails' => [ $globals['siteEmail'] ],
+                'publisher' => /** @Ignore */ $translator->trans($globals['sitePublisher'], [], 'additional')
         ]);
 
         // Instead of
@@ -545,6 +546,7 @@ implements InterfaceRepository
         $description = self::xmlEncode($description);
         $subject = self::xmlEncode(implode(', ', $subjectParts));
         $creator = self::xmlEncode(implode(', ', $creatorParts));
+        $publisher = self::xmlEncode($this->options['publisher']);
 
         if (!is_null($datePublished)) {
             $date = $datePublished->format('Y-m-d');
@@ -566,7 +568,7 @@ implements InterfaceRepository
                 <dc:title>{$title}</dc:title>
                 <dc:identifier>{$url}</dc:identifier>
                 <dc:creator>{$creator}</dc:creator>
-                <dc:publisher>Institut f&#252;r die Geschichte der deutschen Juden</dc:publisher>
+                <dc:publisher>{$publisher}</dc:publisher>
                 <dc:subject>{$subject}</dc:subject>
                 <dc:type>Online Ressource</dc:type>
                 <dc:description>{$description}</dc:description>
