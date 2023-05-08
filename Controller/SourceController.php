@@ -576,9 +576,8 @@ EOT;
             return false;
         }
 
-        $baseDir = realpath($this->getProjectDir());
-        $relPath = sprintf('viewer/%s', $dir);
-        $filePath = $baseDir . '/web/' . $relPath;
+        $relPath = sprintf('/viewer/%s', $dir);
+        $filePath = $this->getGlobal('webDir') . $relPath;
 
         if (!file_exists($filePath)) {
             return false;
