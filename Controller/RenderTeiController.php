@@ -1,4 +1,5 @@
 <?php
+// src/Controller/RenderTeiController.php
 
 /**
  * Shared methods for Controllers working with the TEI-files

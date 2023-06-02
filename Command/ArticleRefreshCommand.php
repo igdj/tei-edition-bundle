@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ArticleRefreshCommand.php
+// src/Command/ArticleRefreshCommand.php
 
 namespace TeiEditionBundle\Command;
 

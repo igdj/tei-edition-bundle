@@ -2,8 +2,7 @@
 
 namespace TeiEditionBundle\Utils\ImageMagick;
 
-
-/*
+/**
  *
  */
 class ImageMagickProcessor

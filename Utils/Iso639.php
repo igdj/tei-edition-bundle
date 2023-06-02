@@ -1,7 +1,5 @@
 <?php
-/*
- *
- */
+
 namespace TeiEditionBundle\Utils;
 
 /**

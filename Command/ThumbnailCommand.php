@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ThumbnailCommand.php
+// src/Command/ThumbnailCommand.php
 
 namespace TeiEditionBundle\Command;
 

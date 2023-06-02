@@ -1,4 +1,5 @@
 <?php
+// src/Controller/GlossaryController.php
 
 namespace TeiEditionBundle\Controller;
 

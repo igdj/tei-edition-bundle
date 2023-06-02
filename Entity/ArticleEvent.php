@@ -1,4 +1,5 @@
 <?php
+// src/Entity/ArticleEvent.php
 
 namespace TeiEditionBundle\Entity;
 

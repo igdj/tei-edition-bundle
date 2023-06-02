@@ -4,7 +4,7 @@ namespace TeiEditionBundle\Utils\Xsl;
 
 use XSLTProcessor as NativeXsltProcessor;
 
-/*
+/**
  * Extend XsltProcessor to set an adapter that handles XSLT 2
  */
 class XsltProcessor

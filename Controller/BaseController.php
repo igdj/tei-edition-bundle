@@ -1,4 +1,5 @@
 <?php
+// src/Controller/BaseController.php
 
 /**
  * Shared methods for Controllers

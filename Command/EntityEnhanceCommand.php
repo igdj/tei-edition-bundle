@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/EntityEnhanceCommand.php
+// src/Command/EntityEnhanceCommand.php
 
 namespace TeiEditionBundle\Command;
 

@@ -1,4 +1,5 @@
 <?php
+// src/Controller/SourceController.php
 
 namespace TeiEditionBundle\Controller;
 

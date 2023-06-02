@@ -1,4 +1,5 @@
 <?php
+// src/Entity/ArticlePerson.php
 
 namespace TeiEditionBundle\Entity;
 

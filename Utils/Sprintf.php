@@ -1,12 +1,9 @@
 <?php
-/*
- * Verbatim copy of https://github.com/jalet/util-sprintf-php
- */
+
 namespace TeiEditionBundle\Utils;
 
-
 /**
- *
+ * Verbatim copy of https://github.com/jalet/util-sprintf-php
  */
 class Sprintf
 {

@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ArticleBiblioCommand.php
+// src/Command/ArticleBiblioCommand.php
 
 namespace TeiEditionBundle\Command;
 

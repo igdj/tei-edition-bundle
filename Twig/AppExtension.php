@@ -1,10 +1,10 @@
 <?php
-// src/TeiEditionBundle/Twig/AppExtension.php
+// src/Twig/AppExtension.php
 
 /**
  * see http://symfony.com/doc/current/cookbook/templating/twig_extension.html
  *
- * If not aut-registered, you can activate in
+ * If not auto-registered, you can activate in
  *   config/services.yml
  * as
  * services:

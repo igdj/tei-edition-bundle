@@ -1,4 +1,5 @@
 <?php
+// src/Controller/BibliographyController.php
 
 namespace TeiEditionBundle\Controller;
 

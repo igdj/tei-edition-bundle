@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ArticleValidateCommand.php
+// src/Command/ArticleValidateCommand.php
 
 namespace TeiEditionBundle\Command;
 

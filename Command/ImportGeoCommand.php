@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ImportGeoCommand.php
+// src/Command/ImportGeoCommand.php
 
 namespace TeiEditionBundle\Command;
 

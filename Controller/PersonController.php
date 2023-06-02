@@ -1,4 +1,5 @@
 <?php
+// src/Controller/PersonController.php
 
 namespace TeiEditionBundle\Controller;
 

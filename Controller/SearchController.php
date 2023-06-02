@@ -1,4 +1,5 @@
 <?php
+// src/Controller/SearchController.php
 
 namespace TeiEditionBundle\Controller;
 

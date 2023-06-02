@@ -1,4 +1,5 @@
 <?php
+// src/Controller/JsonLdResponse.php
 
 namespace TeiEditionBundle\Controller;
 

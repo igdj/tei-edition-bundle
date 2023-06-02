@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/MetsCommand.php
+// src/Command/MetsCommand.php
 
 namespace TeiEditionBundle\Command;
 

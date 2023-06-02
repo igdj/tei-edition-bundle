@@ -1,13 +1,13 @@
 <?php
-/**
- * Helper Class to work with TEI / DTA-Basisformat DTABf
- */
 
 namespace TeiEditionBundle\Utils;
 
 use FluentDOM\DOM\Document as FluentDOMDocument;
 use FluentDOM\Exceptions\LoadingError\FileNotLoaded;
 
+/**
+ * Helper Class to work with TEI / DTA-Basisformat DTABf
+ */
 class TeiHelper
 {
     // Function for basic field validation (present and neither empty nor only white space

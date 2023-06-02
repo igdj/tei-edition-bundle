@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ExtractGeoCommand.php
+// src/Command/ExtractGeoCommand.php
 
 namespace TeiEditionBundle\Command;
 

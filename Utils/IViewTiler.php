@@ -1,4 +1,5 @@
 <?php
+
 namespace TeiEditionBundle\Utils;
 
 class IViewTiler

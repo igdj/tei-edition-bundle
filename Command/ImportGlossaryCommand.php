@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ImportGlossaryCommand.php
+// src/Command/ImportGlossaryCommand.php
 
 namespace TeiEditionBundle\Command;
 

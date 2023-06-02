@@ -1,5 +1,5 @@
 <?php
-// src/TeiEditionBundle/Command/ArticleFormatCommand.php
+// src/Command/ArticleFormatCommand.php
 
 namespace TeiEditionBundle\Command;
 

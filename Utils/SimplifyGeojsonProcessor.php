@@ -2,9 +2,9 @@
 
 namespace TeiEditionBundle\Utils;
 
-
-/*
- *
+/**
+ * Wrapper around CLI simplify-geojson
+ * from https://www.npmjs.com/package/simplify-geojson
  */
 class SimplifyGeojsonProcessor
 {

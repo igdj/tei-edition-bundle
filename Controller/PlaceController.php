@@ -1,4 +1,5 @@
 <?php
+// src/Controller/PlaceController.php
 
 namespace TeiEditionBundle\Controller;
 

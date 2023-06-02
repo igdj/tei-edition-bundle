@@ -1,4 +1,5 @@
 <?php
+// src/Controller/DateController.php
 
 namespace TeiEditionBundle\Controller;
 

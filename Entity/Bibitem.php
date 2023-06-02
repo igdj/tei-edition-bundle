@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Bibitem.php
 
 namespace TeiEditionBundle\Entity;
 
