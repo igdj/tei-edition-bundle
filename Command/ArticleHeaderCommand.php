@@ -120,6 +120,12 @@ extends BaseCommand
 
         if ($input->getOption('publish')) {
             $entity->setStatus(1);
+            $datePublished = $entity->getDatePublished();
+            if (is_null($datePublished)) {
+                // make sure datePublished is not null
+                $entity->setDatePublished($datePublished = new \DateTime());
+            }
+
             $this->em->persist($entity);
 
             // set the (non-deleted)sources belonging to this article to publish as well
