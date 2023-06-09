@@ -641,7 +641,7 @@ extends BaseController
             return $node->attr('data-title');
         }));
 
-        // refs to other articles in the format jg:article-123 or jgo:source-123#anchor
+        // refs to other articles in the format jgo:article-123 or jgo:source-123#anchor
         $refs = array_unique($crawler->filterXPath("//a[@class='external']")->each(function ($node, $i) {
             $href = $node->attr('href');
             if (preg_match('/^jgo:(article|source)\-(\d+)(\#.+)?$/', $node->attr('href'))) {

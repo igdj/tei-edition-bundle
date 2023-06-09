@@ -112,7 +112,7 @@ trait SharingBuilderTrait
                         if (!is_null($uidSource)) {
                             // check for thumb
                             $thumb = sprintf('viewer/source-%05d/thumb.jpg',
-                                             str_replace('jgo:source-', '', $uidSource));
+                                             preg_replace('/.*source\-/', '', $uidSource));
 
                             if (file_exists($this->getGlobal('webDir') . '/' . $thumb)) {
                                 $og['og:image'] = $baseUri . $thumb;

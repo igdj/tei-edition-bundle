@@ -128,7 +128,7 @@
             <h5><a href="{{ path }}">{{ source.name }}</a></h5>
             <div class="container-fluid">
                 <div class="row">
-        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+        {% set thumb = '/viewer/source-%05d/thumb.jpg'|format(source.uid|u.replaceMatches('/.*source\-/', '').__toString) %}
                     <div class="col-xs-4" style="max-height: 150px; overflow: hidden;">
         {% if file_exists(webDir ~ thumb) %}
             {% if delayLoad %}
@@ -159,7 +159,7 @@
     {% set path = path('source', { 'uid' : source.uid }) %}
     <div class="row box-color-content-inverse">
         <div class="col-sm-4">
-        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+        {% set thumb = '/viewer/source-%05d/thumb.jpg'|format(source.uid|u.replaceMatches('/.*source\-/', '').__toString) %}
         {% if file_exists(webDir ~ thumb) %}
             <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
         {% endif %}
