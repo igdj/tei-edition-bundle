@@ -81,7 +81,7 @@
 
         "sylius/theme-bundle": "^2.1",
 
-        "picturae/oai-pmh": "0.5.20",
+        "saidatom/oai-pmh": "0.1",
         "symfony/psr-http-message-bridge": "^2.0",
         "laminas/laminas-diactoros": "^2.14",
 
