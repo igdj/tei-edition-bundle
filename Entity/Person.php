@@ -82,7 +82,6 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     /**
      * @var string Date of death.
      *
-     * @Assert\Date
      * @ORM\Column(type="string", nullable=true)
      */
     protected $deathDate;
