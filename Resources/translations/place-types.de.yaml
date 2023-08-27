@@ -1,5 +1,6 @@
 Ocean:                              Ozean
 Oceans:                             Ozeane
+Sea:                                Meer
 Seas:                               Meere
 Archipelago:                        Inselgruppe
 Island:                             Insel
@@ -17,45 +18,54 @@ Dependent states:                   Abhängigee Gebiete
 Country:                            Land
 Countries:                          Landesteile
 Autonomous republic:                Autonome Republik
+Autonomous republics:               Autonome Republiken
 Former primary political entity:    Ehemaliger Staat
 Former primary political entities:  Ehemalige Staaten
+Former administrative division:     Ehemalige Verwaltungseinheit
 Former administrative divisions:    Ehemalige Verwaltungseinheiten
 Former group of political entitites: Ehemaliger Staatenbund
 Historical region:                  Historische Region
 Historical regions:                 Historische Regionen
+General region:                     Großregion
 General regions:                    Großregionen
+Region:                             Region
 Regions:                            Regionen
 State:                              Land
 States:                             Länder
 District:                           Bezirk
 Districts:                          Bezirke
+National district:                  Bezirk
 National districts:                 Bezirke
 Province:                           Provinz
 Provinces:                          Provinzen
 Oblast:                             Gebiet
 Oblasts:                            Gebiete
 County:                             Kreis
+Counties:                           Kreise
 Canton:                             Kanton
 Cantons:                            Kantone
 Voivodeship:                        Woiwodschaft 
 Voivodeships:                       Woiwodschaften
+Autonomous community:               Autonome Gemeinschaft
 Autonomous communities:             Autonome Gemeinschaften
-National district:                  Bezirk
 Governorate:                        Gouvernement
-General region:                     Allgemeine Gegend
+Governorates:                       Gouvernements
 Metropolitan area:                  Großraum
+Metropolitan areas:                 Großräume
 Municipality:                       Gemeinde
+Municipalities:                     Gemeinden
 Place:                              Ort
 Places:                             Orte
 Autonomous city:                    Autonome Stadt
 Autonomous cities:                  Autonome Städte
-Autonomous community:               Autonome Gemeinschaft 
 Special city:                       Stadt
+Special cities:                     Städte
 City district:                      Ortsteil
 City districts:                     Ortsteile
 Neighborhood:                       Ortsteil
 Neighborhoods:                      Ortsteile
 Mountain system:                    Gebirge
+Mountain systems:                   Gebirge
 Bay:                                Bucht
 Peninsula:                          Halbinsel
 Continent:                          Kontinent
