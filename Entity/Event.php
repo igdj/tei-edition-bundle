@@ -69,7 +69,6 @@ implements \JsonSerializable, JsonLdSerializable
     /**
      * @var string The end date (and time) of the item.
      *
-     * @Assert\Date
      * @ORM\Column(type="string", nullable=true)
      */
     protected $endDate;
