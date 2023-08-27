@@ -7,7 +7,7 @@
         {% if places is not empty %}
         {% set last_initial = '' %}
         {% for place in places %}
-            {% set initial = slugify.slugify(place.name|first)|upper %}
+            {% set initial = slugify.slugify(place.nameLocalized(app.request.locale)|first)|upper %}
             {% if initial != last_initial %}
                 {% if last_initial != '' %}
             </ul>

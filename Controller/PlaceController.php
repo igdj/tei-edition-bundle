@@ -119,13 +119,25 @@ extends BaseController
     /**
      * @Route("/place", name="place-index")
      */
-    public function indexAction(EntityManagerInterface $entityManager,
+    public function indexAction(Request $request,
+                                EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator)
     {
-        $places = $entityManager
-                ->getRepository('\TeiEditionBundle\Entity\Place')
-                ->findBy([ 'type' => 'inhabited place' ],
-                         [ 'name' => 'ASC' ]);
+        $qb = $entityManager
+                ->createQueryBuilder();
+
+        $nameSort = sprintf("COALESCE(JSON_UNQUOTE(JSON_EXTRACT(P.alternateName ,'$.%s')),P.name) HIDDEN nameSort",
+                            $request->getLocale());
+        $qb->select([
+                'P',
+                $nameSort
+            ])
+            ->from('\TeiEditionBundle\Entity\Place', 'P')
+            ->where("P.type='inhabited place'")
+            ->orderBy('nameSort')
+            ;
+
+        $places = $qb->getQuery()->getResult();
 
         return $this->render('@TeiEdition/Place/index.html.twig', [
             'pageTitle' => $translator->trans('Places'),
