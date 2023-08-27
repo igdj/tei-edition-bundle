@@ -477,12 +477,16 @@ implements \JsonSerializable, JsonLdSerializable
      *
      * @return string
      */
-    public function getNameLocalized($locale = 'en')
+    public function getNameLocalized($locale = 'en', $fallback = true)
     {
         if (is_array($this->alternateName)
             && array_key_exists($locale, $this->alternateName))
         {
             return $this->alternateName[$locale];
+        }
+
+        if (!$fallback) {
+            return;
         }
 
         return $this->getName();
