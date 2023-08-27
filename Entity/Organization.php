@@ -69,7 +69,6 @@ implements \JsonSerializable, JsonLdSerializable
     /**
      * @var string The date that this organization was dissolved.
      *
-     * @Assert\Date
      * @ORM\Column(type="string", nullable=true)
      */
     protected $dissolutionDate;
