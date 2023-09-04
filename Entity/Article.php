@@ -1249,6 +1249,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
             . '.' . $locale . '.' . $this->buildDoiVersionAppendix();
     }
 
+    /**
+     * TODO: Switch to public function jsonSerialize(): mixed
+     * from PHP 7.4 on
+     */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

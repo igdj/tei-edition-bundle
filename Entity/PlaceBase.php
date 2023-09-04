@@ -492,7 +492,13 @@ implements \JsonSerializable, JsonLdSerializable
         return $this->getName();
     }
 
-    public function jsonSerialize() /* For PHP >= 0 : mixed */
+    /**
+     * TODO: Switch to
+     *  public function jsonSerialize(): mixed
+     * from PHP 7.4 on
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return [
             'id' => $this->id,

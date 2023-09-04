@@ -977,6 +977,12 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         );
     }
 
+    /**
+     * TODO: Switch to
+     *  public function jsonSerialize(): mixed
+     * from PHP 7.4 on
+     */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

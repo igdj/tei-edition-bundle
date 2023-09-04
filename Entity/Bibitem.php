@@ -1195,10 +1195,15 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         return $parts;
     }
 
-    /*
+    /**
      * We transfer to Citeproc JSON
      * see https://github.com/citation-style-language/schema/blob/master/csl-data.json
+     *
+     * TODO: Switch to
+     *  public function jsonSerialize($locale = 'de_DE'): mixed
+     * from PHP 7.4 on
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize($locale = 'de_DE')
     {
         // see http://aurimasv.github.io/z2csl/typeMap.xml
