@@ -188,7 +188,7 @@
       </trans-unit>
       <trans-unit id="96de6a349142be3b38059b73c133f2346e8db0ab" resname="Holding Institution">
         <source>Holding Institution</source>
-        <target>Bewahrende Institutionn</target>
+        <target>Bewahrende Institution</target>
         <jms:reference-file line="11">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="11">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
         <jms:reference-file line="308">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/vendor/igdj/tei-edition-bundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
