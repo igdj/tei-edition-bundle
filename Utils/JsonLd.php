@@ -41,4 +41,18 @@ class JsonLd
 
         return count($ret) < 3 ? $ret[0] : implode('-', $ret);
     }
+
+    /**
+     * Normalize whitespace coming from XML
+     * TODO: this should already be called when reading the TEI-file
+     */
+    public static function normalizeWhitespace($txt)
+    {
+        if (is_null($txt)) {
+            return;
+        }
+
+        // http://stackoverflow.com/a/33980774
+        return preg_replace(['(\s+)u', '(^\s|\s$)u'], [' ', ''], $txt);
+    }
 }
