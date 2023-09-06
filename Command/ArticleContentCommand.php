@@ -132,6 +132,16 @@ extends BaseCommand
 
             case 'source':
                 $fnameXslt = 'dtabf_viewer.xsl';
+
+                $interpretation = $entity->getIsPartOf();
+                if (is_null($interpretation)) {
+                    // look for sourceDescription in $entity
+                    $html = $this->renderTei($fname, 'dtabf_note.xsl',
+                                            [ 'params' => $params,
+                                            'locateXmlResource' => false ]);
+                    $description = $this->html2Text($html, false);
+                    $entity->setDescription(trim($description));
+                }
                 break;
 
             default:
