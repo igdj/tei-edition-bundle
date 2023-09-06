@@ -136,7 +136,7 @@ extends BaseController
         }
 
         if (in_array($request->get('_route'), [ 'person-jsonld', 'person-by-gnd-jsonld' ])) {
-            return new JsonLdResponse($person->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($person->jsonLdSerialize($request->getLocale(), false, true));
         }
 
         return $this->render('@TeiEdition/Person/detail.html.twig', [

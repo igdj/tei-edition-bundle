@@ -162,7 +162,7 @@ extends RenderTeiController
         }
 
         if (in_array($request->get('_route'), [ 'article-jsonld' ])) {
-            return new JsonLdResponse($article->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($article->jsonLdSerialize($request->getLocale(), false, true));
         }
 
         return $this->render('@TeiEdition/Article/article.html.twig', [

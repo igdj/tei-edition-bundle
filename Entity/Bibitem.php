@@ -1282,7 +1282,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         return $data;
     }
 
-    public function jsonLdSerialize($locale, $omitContext = false)
+    public function jsonLdSerialize($locale, $omitContext = false, $standalone = false)
     {
         // TODO:
         // for full property,

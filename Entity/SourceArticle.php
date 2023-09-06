@@ -3,9 +3,8 @@
 
 namespace TeiEditionBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use TeiEditionBundle\Utils\JsonLd;
 
 /**
  *
@@ -93,12 +92,12 @@ extends Article
         return false;
     }
 
-    public function jsonLdSerialize($locale, $omitContext = false)
+    public function jsonLdSerialize($locale, $omitContext = false, $standalone = false)
     {
-        $ret = parent::jsonLdSerialize($locale, $omitContext);
+        $ret = parent::jsonLdSerialize($locale, $omitContext, $standalone);
 
         if (!empty($this->creator)) {
-            $ret['creator'] = $this->creator;
+            $ret['creator'] = JsonLd::normalizeWhitespace($this->creator);
         }
 
         if (!empty($this->dateCreated)) {
@@ -106,11 +105,11 @@ extends Article
         }
 
         if (isset($this->contentLocation)) {
-            $ret['spatialCoverage'] = $this->contentLocation->jsonLdSerialize($locale, true);
+            $ret['spatialCoverage'] = $this->contentLocation->jsonLdSerialize($locale, true, $standalone);
         }
 
         if (isset($this->provider)) {
-            $ret['provider'] = $this->provider->jsonLdSerialize($locale, true);
+            $ret['provider'] = $this->provider->jsonLdSerialize($locale, true, $standalone);
         }
 
         if (empty($ret['keywords']) && !is_null($this->isPartOf)) {

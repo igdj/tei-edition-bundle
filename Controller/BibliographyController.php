@@ -201,7 +201,7 @@ extends BaseController
         }
 
         if (in_array($request->get('_route'), [ 'bibliography-jsonld' ])) {
-            return new JsonLdResponse($bibitem->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($bibitem->jsonLdSerialize($request->getLocale(), false, true));
         }
         else if (in_array($request->get('_route'), [ 'bibliography-ris' ])) {
             return $this->buildRisResponse($bibitem);

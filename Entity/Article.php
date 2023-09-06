@@ -1281,7 +1281,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         ];
     }
 
-    public function jsonLdSerialize($locale, $omitContext = false)
+    public function jsonLdSerialize($locale, $omitContext = false, $standalone = false)
     {
         $ret = [
             '@context' => 'http://schema.org',
@@ -1309,7 +1309,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         if (!is_null($this->author)) {
             $authors = [];
             foreach ($this->author as $author) {
-                $authors[] = $author->jsonLdSerialize($locale, true);
+                $authors[] = $author->jsonLdSerialize($locale, true, $standalone);
             }
 
             if (count($authors) > 0) {
@@ -1318,7 +1318,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         }
 
         if (!is_null($this->translator)) {
-            $ret['translator'] = $this->translator->jsonLdSerialize($locale, true);
+            $ret['translator'] = $this->translator->jsonLdSerialize($locale, true, $standalone);
         }
 
         if (!empty($this->license)) {
@@ -1330,6 +1330,34 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
                 default:
                     $ret['license'] = $this->license;
             }
+        }
+
+        $description = null;
+        switch ($this->articleSection) {
+            case 'background':
+            case 'interpretation':
+                $description = $this->description;
+                break;
+
+            case 'source':
+                if (!is_null($this->isPartOf)) {
+                    $description = $this->isPartOf->getDescription();
+                }
+                else {
+                    $description = $this->description;
+                }
+                break;
+        }
+
+        if (!empty($description)) {
+            // remove all caps heading at beginning
+            $description = preg_replace('/^\p{Lu}[\p{Lu}\x{00df}\-\']+\s+/', '', $description);
+
+            $ret['abstract'] = $description;
+        }
+
+        if (!empty($this->text) && $standalone) {
+            $ret['text'] = $this->text;
         }
 
         if (!empty($this->keywords)) {
@@ -1358,20 +1386,22 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
             case 'background':
             case 'interpretation':
                 $description = $this->description;
-                if (!empty($description)) {
-                    // remove all caps heading at beginning
-                    $description = preg_replace('/^\p{Lu}[\p{Lu}\x{00df}\-\']+\s+/', '', $description);
-                }
                 break;
 
             case 'source':
                 if (!is_null($this->isPartOf)) {
                     $description = $this->isPartOf->getDescription();
                 }
+                else {
+                    $description = $this->description;
+                }
                 break;
         }
 
         if (!empty($description)) {
+            // remove all caps heading at beginning
+            $description = preg_replace('/^\p{Lu}[\p{Lu}\x{00df}\-\']+\s+/', '', $description);
+
             $ret['og:description'] = str_replace("\n", ' ', self::truncate($description, 190, true));
         }
 

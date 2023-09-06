@@ -119,7 +119,7 @@ extends BaseController
         }
 
         if (in_array($request->get('_route'), [ 'organization-jsonld', 'organization-by-gnd-jsonld' ])) {
-            return new JsonLdResponse($organization->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($organization->jsonLdSerialize($request->getLocale(), false, true));
         }
 
         return $this->render('@TeiEdition/Organization/detail.html.twig', [

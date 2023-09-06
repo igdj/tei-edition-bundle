@@ -97,7 +97,7 @@ extends ArticleController
                                            TranslatorInterface $translator,
                                            SourceArticle $sourceArticle)
     {
-        $jsonLd = $sourceArticle->jsonLdSerialize($request->getLocale());
+        $jsonLd = $sourceArticle->jsonLdSerialize($request->getLocale(), false, true);
 
         if (empty($jsonLd['thumbnailUrl'])) {
             // use og:image to set this property

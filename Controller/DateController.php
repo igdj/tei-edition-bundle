@@ -113,7 +113,7 @@ extends BaseController
         }
 
         if (in_array($request->get('_route'), [ 'event-jsonld', 'event-by-gnd-jsonld' ])) {
-            return new JsonLdResponse($event->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($event->jsonLdSerialize($request->getLocale(), false, true));
         }
 
         return $this->render('@TeiEdition/Date/detail.html.twig', [

@@ -996,7 +996,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         ];
     }
 
-    public function jsonLdSerialize($locale, $omitContext = false)
+    public function jsonLdSerialize($locale, $omitContext = false, $standalone = false)
     {
         static $genderMap = [
             'F' => 'http://schema.org/Female',
@@ -1021,7 +1021,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
             $property = $lifespan . 'Place';
             if (!is_null($this->$property)) {
-                $ret[$property] = $this->$property->jsonLdSerialize($locale, true);
+                $ret[$property] = $this->$property->jsonLdSerialize($locale, true, $standalone);
             }
         }
 

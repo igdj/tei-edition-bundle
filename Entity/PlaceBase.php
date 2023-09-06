@@ -517,7 +517,7 @@ implements \JsonSerializable, JsonLdSerializable
         return 'Place';
     }
 
-    public function jsonLdSerialize($locale, $omitContext = false)
+    public function jsonLdSerialize($locale, $omitContext = false, $standalone = false)
     {
         $ret = [
             '@context' => 'http://schema.org',

@@ -175,7 +175,7 @@ extends BaseController
         }
 
         if (in_array($request->get('_route'), [ 'place-jsonld', 'place-by-tgn-jsonld' ])) {
-            return new JsonLdResponse($place->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($place->jsonLdSerialize($request->getLocale(), false, true));
         }
 
         // get the persons associated with this place, currently birthplace / deathplace
@@ -228,7 +228,7 @@ extends BaseController
         }
 
         if (in_array($request->get('_route'), [ 'landmark-jsonld' ])) {
-            return new JsonLdResponse($landmark->jsonLdSerialize($request->getLocale()));
+            return new JsonLdResponse($landmark->jsonLdSerialize($request->getLocale(), false, true));
         }
 
         return $this->render('@TeiEdition/Place/landmark-detail.html.twig', [
