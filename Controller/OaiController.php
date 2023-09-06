@@ -160,6 +160,10 @@ implements InterfaceRepository
 
     static function xmlEncode($str)
     {
+        if (is_null($str)) {
+            return;
+        }
+
         return htmlspecialchars(rtrim($str), ENT_XML1, 'utf-8');
     }
 
