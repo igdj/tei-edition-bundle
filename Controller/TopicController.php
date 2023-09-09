@@ -138,7 +138,7 @@ extends RenderTeiController
             'language' => \TeiEditionBundle\Utils\Iso639::code1to3($locale),
         ];
 
-        $article = $$entityManager
+        $article = $entityManager
                 ->getRepository('\TeiEditionBundle\Entity\Article')
                 ->findOneBy($criteria)
                 ;
