@@ -109,6 +109,7 @@ extends RenderTeiController
     }
 
     /**
+     * @Route("/topic/{slug}.jsonld", name="topic-background-jsonld")
      * @Route("/topic/{slug}.pdf", name="topic-background-pdf")
      * @Route("/topic/{slug}", name="topic-background")
      */
@@ -265,6 +266,12 @@ extends RenderTeiController
         }
         else {
             $sourcesPrimary = & $sources;
+        }
+
+        if (in_array($request->get('_route'), [ 'topic-background-jsonld' ])) {
+            if (!is_null($article) && $article instanceof \TeiEditionBundle\Entity\Article) {
+                return new JsonLdResponse($article->jsonLdSerialize($request->getLocale(), false, true));
+            }
         }
 
         return $this->render('@TeiEdition/Topic/background.html.twig', [
