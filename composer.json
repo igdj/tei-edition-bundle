@@ -82,7 +82,7 @@
 
         "sylius/theme-bundle": "^2.1",
 
-        "saidatom/oai-pmh": "0.1",
+        "square-bit/oai-pmh": "^0.2",
         "symfony/psr-http-message-bridge": "^2.0",
         "laminas/laminas-diactoros": "^2.14",
 
