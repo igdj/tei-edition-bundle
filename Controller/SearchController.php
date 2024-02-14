@@ -10,11 +10,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Cocur\Slugify\SlugifyInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use FS\SolrBundle\SolrInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Solarium\Component\Facet\JsonTerms;
 
 /**
  *
@@ -118,20 +118,24 @@ extends BaseController
                     // set a filter-query to this value
                     $solrQuery->addFilterQuery([
                         'key' => $facetName,
-                        'tag' => $facetName,
+                        'local_tag' => $facetName,
                         'query' => $field . ':' . $filter[$facetName]
                     ]);
                 }
 
                 // create a facet field
-                $facetField = $facetSet
-                    ->createFacetField([
-                        'key' => $facetName,
-                        'field' => $field,
-                        'exclude' => $facetName,
-                    ])
+                // https://solr.apache.org/guide/8_1/json-facet-api.html
+                $facetField = new JsonTerms([
+                    'local_key' => $facetName,
+                    'field' => $field,
+                    'domain' => [ 'excludeTags' => $facetName ], // https://solr.apache.org/guide/8_1/json-faceting-domain-changes.html#filter-exclusions
+                ]);
+
+                $facetField
                     ->setMinCount(1) // only get the ones with matches
                     ;
+
+                $facetSet->addFacet($facetField);
             }
 
             // highlighting
