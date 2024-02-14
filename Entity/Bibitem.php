@@ -311,7 +311,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
      *
      * @ORM\Column(type="json", nullable=true)
      *
-     * @Solr\Field(type="strings")
+     * @Solr\Field(type="strings", getter="getDescriptionStrings")
      *
      */
     protected $description;
@@ -1550,5 +1550,16 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     public function shouldBeIndexed()
     {
         return $this->status >= 0;
+    }
+
+    protected function getDescriptionStrings()
+    {
+        if (!is_array($this->description)) {
+            return [];
+        }
+
+        // TODO: don't return full JSON-blob, but only relevant fields
+        // like author / editor / container-title, publisher
+        return array_values($this->description);
     }
 }
