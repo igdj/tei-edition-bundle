@@ -240,9 +240,11 @@
         <group delimiter="&#160;">
           <number variable="volume"/>
           <number variable="issue" prefix="(" suffix=")"/>
-          <if variable="issued">
-            <date variable="issued" form="numeric" date-parts="day-month-year" prefix="(" suffix=")"/>
-          </if>
+          <choose>
+            <if variable="issued">
+              <date variable="issued" form="numeric" date-parts="day-month-year" prefix="(" suffix=")"/>
+            </if>
+          </choose>
         </group>
       </if>
       <else-if type="report song broadcast" match="any">
