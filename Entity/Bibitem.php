@@ -1552,7 +1552,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         return $this->status >= 0;
     }
 
-    protected function getDescriptionStrings()
+    public function getDescriptionStrings()
     {
         if (!is_array($this->description)) {
             return [];
