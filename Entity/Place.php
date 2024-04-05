@@ -46,6 +46,7 @@ extends PlaceBase
         'islands (landforms)' => 'island',          // http://vocab.getty.edu/aat/300008791
         'gulfs (bodies of water)' => 'gulf',        // http://vocab.getty.edu/aat/300132315
         'bays (bodies of water)' => 'bay',          // http://vocab.getty.edu/aat/300132316
+        'estuaries' => 'estuary',                   // http://vocab.getty.edu/aat/300266571
         'rivers' => 'river',                        // http://vocab.getty.edu/aat/300008707
         'streams' => 'stream',                      // http://vocab.getty.edu/aat/300008699
         'channels (water bodies)' => 'channel',     // http://vocab.getty.edu/aat/300008713
