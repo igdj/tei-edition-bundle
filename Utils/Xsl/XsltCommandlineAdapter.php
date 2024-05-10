@@ -5,6 +5,7 @@ namespace TeiEditionBundle\Utils\Xsl;
 use TeiEditionBundle\Utils\Sprintf;
 
 class XsltCommandlineAdapter
+implements XsltAdapterInterface
 {
     protected $cmdTemplate;
     protected $config = [];
@@ -18,7 +19,7 @@ class XsltCommandlineAdapter
         }
     }
 
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -50,7 +51,7 @@ class XsltCommandlineAdapter
         return join(' ', $nameValue);
     }
 
-    public function transformToXml($srcFilename, $xslFilename, $options = [])
+    public function transformToXml(string $srcFilename, string $xslFilename, array $options = [])
     {
         $this->errors = [];
 

@@ -21,12 +21,12 @@ extends NativeXsltProcessor
         }
     }
 
-    public function setAdapter($adapter)
+    public function setAdapter(XsltAdapterInterface $adapter): void
     {
         $this->adapter = $adapter;
     }
 
-    public function getErrors()
+    public function getErrors(): array
     {
         if (isset($this->adapter)) {
             return $this->adapter->getErrors();
@@ -35,7 +35,7 @@ extends NativeXsltProcessor
         return $this->errors;
     }
 
-    public function transformFileToXml($fname_xml, $fname_xsl, $options = [])
+    public function transformFileToXml(string $fname_xml, string $fname_xsl, array $options = [])
     {
         if (isset($this->adapter)) {
             $res = $this->adapter->transformToXml($fname_xml, $fname_xsl, $options);

@@ -5,6 +5,7 @@ namespace TeiEditionBundle\Utils\Xsl;
 use TeiEditionBundle\Utils\Sprintf;
 
 class XsltSaxonProcessorAdapter
+implements XsltAdapterInterface
 {
     protected $config = [];
     protected $errors = [];
@@ -16,12 +17,12 @@ class XsltSaxonProcessorAdapter
         }
     }
 
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    public function transformToXml($srcFilename, $xslFilename, $options = [])
+    public function transformToXml(string $srcFilename, string $xslFilename, array $options = [])
     {
         $this->errors = [];
 
