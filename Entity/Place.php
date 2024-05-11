@@ -149,13 +149,6 @@ extends PlaceBase
     }
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=false)
-     */
-    protected $type = 'inhabited place';
-
-    /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="children")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
