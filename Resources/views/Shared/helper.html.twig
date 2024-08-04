@@ -144,7 +144,7 @@
             {% set description = source.isPartOf.description %}
             {% if description is not empty %}
                     <div class="col-xs-8" style="font-size: 90%">
-                        {{ description|u.truncate(300, true, '') }}
+                        {{ description|u.truncate(300, '', false) }}
                         ... <a href="{{ path }}">{{ 'Show Source'|trans }} &gt;</a>
                     </div>
             {% endif %}
@@ -166,7 +166,7 @@
         </div>
         <div class="col-sm-8">
         <a href="{{ path }}">
-            <b>{{ source.name|u.truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
+            <b>{{ source.name|u.truncate(160, '...', false) }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
         {% if source.dateCreated is not empty %},
             {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
         {% endif %}

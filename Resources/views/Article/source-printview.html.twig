@@ -53,7 +53,7 @@
     <htmlpageheader name="header" style="display:none">
         <div id="header-wrapper">
             <div id="author-line">
-            {{ name|u.truncate(70, true, '...') }}
+            {{ name|u.truncate(70, '...', false) }}
             </div>
         </div>
     </htmlpageheader>
