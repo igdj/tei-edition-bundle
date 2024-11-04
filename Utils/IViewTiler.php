@@ -6,17 +6,14 @@ class IViewTiler
 {
     var $tile_size = 256;
 
-    function determineMaxZoom ($width, $height)
+    public function determineMaxZoom($width, $height)
     {
-        $currentWidth = $width;
-        $currentHeight = $height;
         $factor = 2;
+        $tileScaled = $this->tile_size;
 
         $maxLevel = 0;
-        while ($currentWidth > $this->tile_size || $currentHeight > $this->tile_size) {
-            $currentWidth = round($width / $factor);
-            $currentHeight = round($height / $factor);
-            $factor *= 2;
+        while ($tileScaled < $width || $tileScaled < $height) {
+            $tileScaled *= $factor;
             ++$maxLevel;
         }
 
