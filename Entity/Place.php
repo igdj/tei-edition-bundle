@@ -50,8 +50,9 @@ extends PlaceBase
         'estuaries' => 'estuary',                   // http://vocab.getty.edu/aat/300266571
         'rivers' => 'river',                        // http://vocab.getty.edu/aat/300008707
         'streams' => 'stream',                      // http://vocab.getty.edu/aat/300008699
-        'channels (water bodies)' => 'channel',     // http://vocab.getty.edu/aat/300008713
         'lakes (bodies of water)' => 'lake',        // http://vocab.getty.edu/aat/300008680
+        'channels (water bodies)' => 'channel',     // http://vocab.getty.edu/aat/300008713
+        'canals (waterways)' => 'canal',            // http://vocab.getty.edu/aat/300006075
         'mountains' => 'mountain',                  // http://vocab.getty.edu/aat/300008795
         'mountain ranges' => 'mountain range',      // http://vocab.getty.edu/aat/300386831
         'mountain systems' => 'mountain system',    // http://vocab.getty.edu/aat/300386832
