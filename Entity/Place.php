@@ -39,6 +39,7 @@ extends PlaceBase
         'facets (controlled vocabulary)' => 'root', // http://vocab.getty.edu/aat/300386699
         'continents' => 'continent',                // http://vocab.getty.edu/aat/300128176
         'oceans' => 'ocean',                        // http://vocab.getty.edu/aat/300008687
+        'oceans (marine bodies of water)' => 'ocean',  // http://vocab.getty.edu/aat/300008687
         'seas' => 'sea',                            // http://vocab.getty.edu/aat/300008694
         'archipelagos' => 'archipelago',            // http://vocab.getty.edu/aat/300386854
         'peninsulas' => 'peninsula',                // http://vocab.getty.edu/aat/300008804
