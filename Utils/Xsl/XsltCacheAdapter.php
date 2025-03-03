@@ -48,7 +48,11 @@ implements XsltAdapterInterface
             return null;
         }
 
-        return join('-', [ $modifiedXml, $modifiedXsl, md5(json_encode($options)) ]);
+        return join('-', [
+            md5($fnameXml), $modifiedXml,
+            md5($fnameXsl), $modifiedXsl,
+            md5(json_encode($options))
+        ]);
     }
 
     public function transformToXml(string $srcFilename, string $xslFilename, array $options = [])
