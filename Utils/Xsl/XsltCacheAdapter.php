@@ -72,13 +72,17 @@ implements XsltAdapterInterface
         }
         else {
             // get from cache or generate
-            $res = $this->cache->get($etag, function (ItemInterface $item, bool &$save) use ($srcFilename, $xslFilename, $options) : string {
+            $res = $this->cache->get($etag, function (ItemInterface $item, bool &$save) use ($srcFilename, $xslFilename, $options): string {
                 $res = $this->xsltAdapter->transformToXml($srcFilename, $xslFilename, $options);
                 $this->errors = $this->xsltAdapter->getErrors();
 
                 if (empty($res) || !empty($this->errors)) {
                     // don't save on errors
                     $save = false;
+
+                    if (is_null($res)) {
+                        $res = ''; // proper return type
+                    }
                 }
 
                 return $res;
