@@ -58,11 +58,14 @@ extends PlaceBase
         'mountain ranges' => 'mountain range',      // http://vocab.getty.edu/aat/300386831
         'mountain systems' => 'mountain system',    // http://vocab.getty.edu/aat/300386832
         'hills' => 'hill',                          // http://vocab.getty.edu/aat/300008777
+        'woods (plant communities)' => 'wood',      // http://vocab.getty.edu/aat/300157169
         'nations' => 'nation',                      // http://vocab.getty.edu/aat/300128207
         'countries (sovereign states)' => 'country',// http://vocab.getty.edu/aat/300387506
         'autonomous regions' => 'autonomous region',// http://vocab.getty.edu/aat/300387107
         'autonomous republics' => 'autonomous republic',// http://vocab.getty.edu/aat/300387110
         'dependent states' => 'dependent state',    // http://vocab.getty.edu/aat/300387176
+        'occupied territories' => 'occupied territory', // http://vocab.getty.edu/aat/300387139
+        'colonies' => 'colony',                     // http://vocab.getty.edu/aat/300387051
         'associations' => 'association',            // http://vocab.getty.edu/aat/300025950, e.g. Commonwealth
         'semi-independent political entities' => 'semi-independent political entity',    // http://vocab.getty.edu/aat/300387052
         'former groups of political entitites' => 'former group of political entitites',    // http://vocab.getty.edu/aat/300387354
