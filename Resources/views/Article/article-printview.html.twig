@@ -2,6 +2,17 @@
 
 {% import '@TeiEdition/Shared/helper.html.twig' as helper %}
 
+{% block head %}
+    {# don't display heading Source Description if there is no related source #}
+    <style>
+    {% if related is defined and related is empty %}
+    .source-description-head {
+        display: none;
+    }
+    {% endif %}
+    </style>
+{% endblock %}
+
 {% block body %}
     <htmlpageheader name="header" style="display:none">
         <div id="header-wrapper">

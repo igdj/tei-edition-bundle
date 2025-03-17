@@ -118,6 +118,11 @@ extends RenderTeiController
                                    $generatePrintView ? '' : 'img-responsive');
 
         $sourceDescription = $this->renderSourceDescription($article, $entityManager, $translator);
+        $related = $entityManager
+            ->getRepository('\TeiEditionBundle\Entity\Article')
+            ->findBy([ 'isPartOf' => $article ],
+                     [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
+
         if ($generatePrintView) {
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
@@ -126,6 +131,7 @@ extends RenderTeiController
                 'article' => $article,
                 'meta' => $meta,
                 'source_description' => $sourceDescription,
+                'related' => $related,
                 'name' => $article->getName(),
                 'html' => preg_replace('/<\/?body>/', '', $html),
                 'authors' => $authors,
@@ -144,11 +150,6 @@ extends RenderTeiController
 
         $entityLookup = $this->buildEntityLookup($entityManager, $entities);
         $glossaryLookup = $this->buildGlossaryLookup($entityManager, $glossaryTerms, $request->getLocale());
-
-        $related = $entityManager
-            ->getRepository('\TeiEditionBundle\Entity\Article')
-            ->findBy([ 'isPartOf' => $article ],
-                     [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
 
         $localeSwitch = [];
         $translations = $entityManager
