@@ -48,6 +48,7 @@ extends PlaceBase
         'gulfs (bodies of water)' => 'gulf',        // http://vocab.getty.edu/aat/300132315
         'bays (bodies of water)' => 'bay',          // http://vocab.getty.edu/aat/300132316
         'coastlines' => 'coastline',                // http://vocab.getty.edu/aat/300008734
+        'capes (landforms)' => 'cape',              // https://vocab.getty.edu/aat/300008850
         'estuaries' => 'estuary',                   // http://vocab.getty.edu/aat/300266571
         'rivers' => 'river',                        // http://vocab.getty.edu/aat/300008707
         'streams' => 'stream',                      // http://vocab.getty.edu/aat/300008699
@@ -58,6 +59,7 @@ extends PlaceBase
         'mountain ranges' => 'mountain range',      // http://vocab.getty.edu/aat/300386831
         'mountain systems' => 'mountain system',    // http://vocab.getty.edu/aat/300386832
         'hills' => 'hill',                          // http://vocab.getty.edu/aat/300008777
+        'valleys (landforms)' => 'valley',          // http://vocab.getty.edu/aat/300008761
         'woods (plant communities)' => 'wood',      // http://vocab.getty.edu/aat/300157169
         'nations' => 'nation',                      // http://vocab.getty.edu/aat/300128207
         'countries (sovereign states)' => 'country',// http://vocab.getty.edu/aat/300387506
