@@ -142,7 +142,7 @@
   <xsl:template match='tei:note[@type="editorial"]'>
     <xsl:choose>
       <xsl:when test="@place='foot'">
-        <a class="editorial-marker img-info-sign" href="#{concat($lang, generate-id())}">&#160;</a><span id="{concat($lang, generate-id())}" class="editorial foot"><xsl:apply-templates/></span>
+        <a class="editorial-marker img-info-sign" data-container="#image-viewer" href="#{concat($lang, generate-id())}">&#160;</a><span id="{concat($lang, generate-id())}" class="editorial foot"><xsl:apply-templates/></span>
       </xsl:when>
       <xsl:when test="@place='end'">
         <span class="fn-intext">
