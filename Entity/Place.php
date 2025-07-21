@@ -98,6 +98,7 @@ extends PlaceBase
         'autonomous cities' => 'autonomous city',   // http://vocab.getty.edu/aat/300387069
         'independent cities' => 'independent city', // http://vocab.getty.edu/aat/300387068
         'special cities' => 'special city',         // http://vocab.getty.edu/aat/300387067
+        'parishes (civil divisions)' => 'parish (civil division)', // http://vocab.getty.edu/aat/300387092
         'autonomous communities' => 'autonomous community', // http://vocab.getty.edu/aat/300387113
         'municipalities' => 'municipality',         // http://vocab.getty.edu/aat/300265612
         'special municipalities' => 'special municipality', // http://vocab.getty.edu/aat/300387213
