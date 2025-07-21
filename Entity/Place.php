@@ -67,6 +67,7 @@ extends PlaceBase
         'autonomous republics' => 'autonomous republic',// http://vocab.getty.edu/aat/300387110
         'dependent states' => 'dependent state',    // http://vocab.getty.edu/aat/300387176
         'occupied territories' => 'occupied territory', // http://vocab.getty.edu/aat/300387139
+        'unincorporated territories' => 'unincorporated territory', // http://vocab.getty.edu/aat/300387118
         'colonies' => 'colony',                     // http://vocab.getty.edu/aat/300387051
         'associations' => 'association',            // http://vocab.getty.edu/aat/300025950, e.g. Commonwealth
         'semi-independent political entities' => 'semi-independent political entity',    // http://vocab.getty.edu/aat/300387052
