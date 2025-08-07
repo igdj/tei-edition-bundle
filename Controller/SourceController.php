@@ -66,7 +66,7 @@ extends ArticleController
     /**
      * Render source into a printable HTML-version
      */
-    protected function renderSourcePdf($parts)
+    protected function renderSourcePdf($parts, $locale = '')
     {
         $sourceArticle = $parts['article'];
 
@@ -86,7 +86,7 @@ extends ArticleController
         exit;
         */
 
-        $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
+        $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf', 'I', $locale);
     }
 
     /**
@@ -326,7 +326,7 @@ extends ArticleController
                         'name' => $sourceArticle->getName(),
                         'interpretations' => $interpretations,
                         'license' => $license,
-                    ]);
+                    ], $request->getLocale());
 
                     return;
                 }

@@ -479,7 +479,7 @@ extends BaseController
     /**
      * Use PdfGenerator to transform HTML into PDF
      */
-    protected function renderPdf($html, $filename = '', $dest = 'I')
+    protected function renderPdf($html, $filename = '', $dest = 'I', $locale = '')
     {
         /*
         // for debugging
@@ -488,12 +488,16 @@ extends BaseController
         */
 
         $fnameLogo = $this->getGlobal('public_dir') . '/img/icon/icons_wide.png';
+        if (!empty($locale) && file_exists($this->getGlobal('public_dir') . '/img/icon/icons_wide.' . $locale . '.png')) {
+            $fnameLogo = $this->getGlobal('public_dir') . '/img/icon/icons_wide.' . $locale . '.png';
+        }
+
         $this->pdfGenerator->imageVars['logo_top'] = file_get_contents($fnameLogo);
 
         // silence due to https://github.com/mpdf/mpdf/issues/302 when using tables
         @$this->pdfGenerator->writeHTML($html);
 
-        $this->pdfGenerator->Output($filename, 'I');
+        $this->pdfGenerator->Output($filename, $dest);
     }
 
     /**

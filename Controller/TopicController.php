@@ -189,7 +189,7 @@ extends RenderTeiController
                 'license' => $license,
             ]);
 
-            $this->renderPdf($html, $slug . '.pdf');
+            $this->renderPdf($html, $slug . '.pdf', 'I', $locale);
 
             return;
         }
