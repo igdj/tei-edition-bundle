@@ -240,6 +240,10 @@ extends BaseCommand
 
                         if ('de' == $locale && !empty($result['biographicalOrHistoricalInformation'])) {
                             $description = $person->getDescription();
+                            if (is_null($description)) {
+                                $description = [];
+                            }
+
                             if (!array_key_exists($locale, $description)) {
                                 $description[$locale] = $result['biographicalOrHistoricalInformation'];
                                 $person->setDescription($description);
