@@ -485,7 +485,7 @@
         ({% if birthPlace is not empty or person.birthDate is not empty %}
                 {{- person.birthDate|dateincomplete -}}
                 {% if birthPlace is not empty %}{% if person.birthDate is not empty %}{{- ',' }}{% endif %}
-                    {% if birthPlace.id is not empty %}
+                    {% if birthPlace is defined and birthPlace.id is not empty %}
                         <a href="{% if birthPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : birthPlace.tgn }) }}{% else %}{{ path('place', { 'id' : birthPlace.id }) }}{% endif %}">
                         {{ birthPlace['name'] }}
                         </a>
