@@ -596,12 +596,33 @@ EOT;
         if (false === $dstPath) {
             return false;
         }
+
         list($relPath, $filePath) = $dstPath;
 
         $fnameZip = $this->buildFolderName($uid) . '.zip';
         $fullnameZip = $filePath . '/' . $fnameZip;
-        $urlZip = $this->get('router')->getContext()->getBaseUrl()
-                . '/' . $relPath . '/' . $fnameZip;
+
+        // build absolute url
+        $requestContext = $this->get('router')->getContext();
+
+        $scheme = $requestContext->getScheme();
+        $port = $requestContext->isSecure() ? $requestContext->getHttpsPort() : $requestContext->getHttpPort();
+
+        $portAppend = '';
+        if ('' !== $port) {
+            // possibly non-default
+            if ('http' === $scheme && 80 !== $port) {
+                $portAppend = ':' . $port;
+            }
+            else if ('https' === $scheme && 443 !== $port) {
+                $portAppend = ':' . $port;
+            }
+        }
+
+        $urlZip = $scheme . '://' . $requestContext->getHost() . $portAppend
+                . $requestContext->getBaseUrl()
+                . $relPath . '/' . $fnameZip
+                ;
 
         $flags = \ZipArchive::CREATE;
         if (file_exists($fullnameZip)) {
@@ -609,6 +630,7 @@ EOT;
             if (!$regenerate) {
                 return $urlZip;
             }
+
             $flags |= \ZipArchive::OVERWRITE;
         }
 
@@ -626,6 +648,7 @@ EOT;
             if (in_array($localfname, [ 'README.txt', 'LIESMICH.txt' ])) {
                 $tempfiles[] = $localfname;
             }
+
             if (!empty($footer) && preg_match('/(\.(jpg|png))$/i', $fname, $matches)) {
                 $res = @getimagesize($fname);
                 if (!empty($res) && $res[0] > 0) {
